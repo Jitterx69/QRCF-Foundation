@@ -1,0 +1,260 @@
+% -------------------------------------------------------
+% SECTION 5: ETHICAL CONTROL THEORY
+% -------------------------------------------------------
+
+Quantum prophetic systems present a unique regulatory challenge: prophecy releases information
+that may perturb the world in harmful ways, yet restricting prophetic information may reduce the
+system’s ability to decrease future harm. Ethical control requires a principled method to balance
+information disclosure, fairness constraints, privacy, robustness, and the minimization of expected
+societal harm. In this section we formalize these considerations.
+
+\subsection{Harm Functional}
+
+Let $\mathcal{H}_X$ contain a designated ``crash'' state $\ket{1}$ representing catastrophic system
+failure. The probability of crash under a state $\rho$ is
+\[
+    P_{\mathrm{crash}}(\rho)
+    =
+    \Tr\!\left[
+        (\dyad{1}_X \otimes \id_V) \rho
+    \right].
+\]
+
+\begin{definition}[Harm Functional]
+Let $c_1, c_2 > 0$. The harm associated with a density operator $\rho$ is
+\[
+    H(\rho)
+    =
+    c_1 P_{\mathrm{crash}}(\rho)
+    +
+    c_2\, D(\rho),
+\]
+where $D(\rho)$ is the measurement-induced disturbance defined by
+\[
+    D(\rho) = \| \rho - M(\rho) \|_1.
+\]
+\end{definition}
+
+\begin{remark}
+The disturbance term penalizes excessive measurement sharpness, reflecting the trade-off between
+information gain and physical perturbation of the quantum state.
+\end{remark}
+
+\subsection{Information Leakage Constraint}
+
+The ethical regulator aims to limit the amount of information transferred from the latent state to
+released prophetic signals.
+
+\begin{definition}[Quantum Mutual Information]
+For a bipartite state $\rho_{XY}$,
+\[
+    I(X;Y)
+    =
+    S(\rho_X)
+    +
+    S(\rho_Y)
+    -
+    S(\rho_{XY}),
+\]
+with marginals $\rho_X = \Tr_Y(\rho)$ and $\rho_Y = \Tr_X(\rho)$.
+\end{definition}
+
+Applying this to prophecy:
+
+\begin{definition}[Leakage Functional]
+Let $\rho_{XV_{\mathrm{rel}}}$ be the joint state of latent and regulator-released prophecy.
+Define
+\[
+    L(\rho) = I(X ; V_{\mathrm{rel}}).
+\]
+\end{definition}
+
+Ethical feasibility requires $L(\rho)$ to be bounded.
+
+\begin{definition}[Leakage Constraint]
+A regulator obeys the leakage constraint for parameter $\epsilon > 0$ if
+\[
+    L(\rho) \le \epsilon
+\]
+for all states encountered under repeated application of $\Phi^{\mathcal{Q}}$.
+\end{definition}
+
+\subsection{Regulator Optimization Problem}
+
+The regulator controls $\lambda$ (noise level) and $\alpha$ (measurement sharpness).
+
+\begin{definition}[Regulatory Action Space]
+The regulator’s admissible controls are
+\[
+    (\lambda, \alpha) \in \mathcal{U}
+    =
+    [0,1] \times [0,1].
+\]
+\end{definition}
+
+To minimize long-term harm, we introduce a value function.
+
+\begin{definition}[Ethical Value Function]
+For discount factor $\gamma \in (0,1)$,
+\[
+    V(\rho)
+    =
+    \min_{(\lambda,\alpha)\in \mathcal{U}}
+    \left[
+        H(\rho)
+        +
+        \gamma\,
+        \mathbb{E}\Big[ V\big(\Phi^{\mathcal{Q}}_{\lambda,\alpha}(\rho)\big) \Big]
+    \right].
+\]
+\end{definition}
+
+Here $\Phi^{\mathcal{Q}}_{\lambda,\alpha}$ denotes the prophecy--response operator with explicit
+dependence on regulator-controlled parameters.
+
+\subsection{Bellman Equation and Existence}
+
+\begin{theorem}[Bellman Equation]
+The value function satisfies
+\[
+    V(\rho)
+    =
+    \min_{(\lambda,\alpha) \in \mathcal{U}}
+    \left[
+        H(\rho)
+        +
+        \gamma
+        V(\Phi^{\mathcal{Q}}_{\lambda,\alpha}(\rho))
+    \right].
+\]
+\end{theorem}
+
+\begin{proof}[Sketch]
+This is a standard dynamic programming principle extended to operator spaces. The finite
+dimensionality of $\mathcal{H}$ ensures compactness of $\mathcal{D}(\mathcal{H})$, and continuity of
+$\Phi^{\mathcal{Q}}_{\lambda,\alpha}$ ensures existence of minimizers on the compact action set
+$\mathcal{U}$.
+\end{proof}
+
+\begin{theorem}[Existence of Optimal Regulator]
+There exists at least one measurable selector $(\lambda^\ast,\alpha^\ast)$ achieving the minimum in the
+Bellman equation for all $\rho$.
+\end{theorem}
+
+\begin{proof}[Sketch]
+Compactness of $\mathcal{U}$ and continuity of $H$ and $\Phi^{\mathcal{Q}}_{\lambda,\alpha}$ ensure the
+existence of minimizers by the Weierstrass theorem.
+\end{proof}
+
+This establishes the formal ethical layer governing the quantum prophetic world.
+
+% -------------------------------------------------------
+% SECTION 6: COMPUTABILITY-THEORETIC LIMITS OF PROPHECY
+% -------------------------------------------------------
+\section{Computability-Theoretic Limits of Prophecy}
+
+Quantum prophetic systems inherit the classical difficulty that certain future events may encode
+computationally undecidable behavior. In this section we formalize minimal conditions under which
+prophecy---even approximate prophecy---becomes impossible due to computability limits. These
+results form the theoretical boundary of any reflexive prophetic system.
+
+\subsection{Prophetic Decision Problems}
+
+Let $\mathcal{P}$ denote the set of all possible sequences obtained through repeated application of
+$\Phi^{\mathcal{Q}}$:
+\[
+    \rho_{t+1} = \Phi^{\mathcal{Q}}(\rho_t), \qquad t \in \mathbb{N}.
+\]
+
+\begin{definition}[Crash-Event Predicate]
+Define the crash predicate
+\[
+    C(\rho) =
+    \begin{cases}
+        1, & \text{if } P_{\mathrm{crash}}(\rho) > \tfrac{1}{2}, \\
+        0, & \text{otherwise}.
+    \end{cases}
+\]
+\end{definition}
+
+\begin{definition}[Prophecy Decision Problem]
+Given $(\rho_0,\Phi^{\mathcal{Q}})$, determine whether there exists $t$ such that $C(\rho_t)=1$.
+\end{definition}
+
+We now investigate the computability-theoretic complexity of this decision problem.
+
+\subsection{Encoding Computational Processes}
+
+Quantum channels can simulate classical computation via reversible embeddings. Let $U_M$ denote
+a unitary that simulates a classical Turing machine $M$ in its computational basis.
+
+\begin{lemma}[Computational Embedding]
+For any classical Turing machine $M$, there exists a CPTP map $\mathcal{E}_M$ acting on an extended
+Hilbert space such that the evolution of $\rho_t$ under $\Phi^{\mathcal{Q}}$ encodes the computation
+history of $M$.
+\end{lemma}
+
+\begin{proof}[Sketch]
+The Stinespring dilation theorem guarantees that any classical computation can be embedded
+in a unitary evolution on a larger Hilbert space. The prophecy--response operator can thus be
+augmented with auxiliary registers implementing reversible computational steps.
+\end{proof}
+
+\subsection{Undecidability of Perfect Prophecy}
+
+\begin{theorem}[Undecidability of Perfect Prophecy]
+There is no algorithm that, given $(\rho_0,\Phi^{\mathcal{Q}})$, decides whether a crash event occurs in
+finite time for all such instances.
+\end{theorem}
+
+\begin{proof}[Sketch]
+By the computational embedding lemma, we can construct $\mathcal{E}_M$ such that the latent
+state registers encode whether $M$ halts. Then $C(\rho_t)=1$ if and only if $M$ halts. Deciding
+crash occurrence would thus solve the Halting Problem, which is impossible.
+\end{proof}
+
+\subsection{Approximate Prophecy and Limitations}
+
+Exact prophecy is impossible in general. However, approximate prophecy remains feasible if
+information is restricted to computably decidable aspects of the underlying state evolution.
+
+\begin{definition}[Approximate Prophecy]
+Let $\delta > 0$. An approximate prophecy is a sequence $\{\tilde{\rho}_t\}$ such that
+\[
+    \|\tilde{\rho}_t - \rho_t\|_1 \le \delta
+\]
+for all $t$.
+\end{definition}
+
+\begin{theorem}[Limit of Approximate Prophecy]
+Even approximate prophecy is undecidable in general if $\delta$ is required to distinguish crash vs.
+non-crash states in cases reducible to halting behavior.
+\end{theorem}
+
+\begin{proof}[Sketch]
+If distinguishing between crash and non-crash requires distinguishing between halting and
+non-halting computations encoded in latent registers, then any $\delta$-approximation that reliably
+determines crash outcomes solves the Halting Problem.
+\end{proof}
+
+\subsection{Decidability Frontiers}
+
+Despite general impossibility, decidability is restored under certain constraints.
+
+\begin{theorem}[Decidability Frontier]
+The prophecy decision problem becomes decidable when
+\[
+    \norm{\mathcal{E}(\rho_1) - \mathcal{E}(\rho_2)}_1 \le k \norm{\rho_1 - \rho_2}_1
+\]
+with $k < 1$ uniformly and when the action space of the agent and regulator is finite.
+\end{theorem}
+
+\begin{proof}[Sketch]
+Under strict contraction, the sequence $\rho_t$ converges to a unique fixed point $\rho^\ast$, and
+the crash predicate reduces to the evaluation of $C(\rho^\ast)$, which is decidable by direct
+inspection.
+\end{proof}
+
+This section establishes the theoretical limits of prophecy. While perfect and universal prophecy
+is impossible, practical quantum prophecy remains feasible when confined to contractive, ethically
+constrained regimes.

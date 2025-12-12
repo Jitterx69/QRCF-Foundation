@@ -1,0 +1,120 @@
+% -------------------------------------------------------
+% File: kraus_examples.tex
+% Supplementary examples of Kraus operators for channels
+% used in the Quantum–Reflexive Control Framework.
+% -------------------------------------------------------
+
+\section{Supplementary Kraus Operator Examples}
+
+This document provides concrete examples of Kraus operator constructions used throughout
+the Quantum–Reflexive Control Framework. Each example is fully specified in matrix form and
+intended for inclusion in simulations or as teaching illustrations in the main text.
+
+\subsection{Amplitude-Damping Channel on a Single Qubit}
+
+One of the central world-evolution channels considered in the framework is the amplitude-damping
+channel with parameter $\gamma \in [0,1]$. Its Kraus operators are:
+
+\[
+K_0 =
+\begin{pmatrix}
+1 & 0 \\
+0 & \sqrt{1-\gamma}
+\end{pmatrix},
+\qquad
+K_1 =
+\begin{pmatrix}
+0 & \sqrt{\gamma} \\
+0 & 0
+\end{pmatrix}.
+\]
+
+These satisfy:
+
+\[
+K_0^\dagger K_0 + K_1^\dagger K_1 = \id.
+\]
+
+They model irreversible decay, and in the prophecy–response operator $\Phi^{\mathcal{Q}}$, they
+encode the natural ``world dynamics'' applied after measurement, regulation, and agent action.
+
+\subsection{Phase-Damping Channel}
+
+The phase-damping (dephasing) channel is useful in alternative implementations of $\Phi^{\mathcal{Q}}$
+when modelling uncertainty or decoherence. Its Kraus operators are:
+
+\[
+L_0 = \sqrt{1-p}\,\id,
+\qquad
+L_1 =
+\sqrt{p}
+\begin{pmatrix}
+1 & 0 \\
+0 & 0
+\end{pmatrix},
+\qquad
+L_2 =
+\sqrt{p}
+\begin{pmatrix}
+0 & 0 \\
+0 & 1
+\end{pmatrix}.
+\]
+
+These yield a CPTP channel satisfying
+\[
+\sum_i L_i^\dagger L_i = \id.
+\]
+
+\subsection{Two-Qubit Extension}
+
+When acting on a bipartite system $X \otimes V$, a single-qubit Kraus operator $K_j$ extends to
+the full Hilbert space as:
+
+\[
+\widetilde{K}_j = K_j \otimes \id_V.
+\]
+
+This is used in the definition of the world-evolution map $\mathcal{E}$:
+
+\[
+\mathcal{E}(\rho) = \sum_j (K_j \otimes \id_V)\,\rho\,(K_j^\dagger \otimes \id_V).
+\]
+
+\subsection{Depolarizing Channel (Regulator Example)}
+
+The regulator uses a depolarizing channel on subsystem $V$ of dimension $d=2$ (for the toy
+model). Its Kraus form is:
+
+\[
+D_0 = \sqrt{1-\lambda}\,\id, \qquad
+D_1 = \sqrt{\frac{\lambda}{3}}\,X, \qquad
+D_2 = \sqrt{\frac{\lambda}{3}}\,Y, \qquad
+D_3 = \sqrt{\frac{\lambda}{3}}\,Z,
+\]
+
+where $X,Y,Z$ are Pauli operators.
+
+When extended to two qubits:
+
+\[
+\widetilde{D}_k = \id_X \otimes D_k.
+\]
+
+\subsection{General Notes for Implementation}
+
+\begin{itemize}
+    \item All channels must satisfy the completeness relation:
+    \[
+    \sum_i K_i^\dagger K_i = \id.
+    \]
+    \item Composition of channels corresponds to multiplication of Kraus sets:
+    if $\mathcal{E}_1$ has Kraus $\{A_i\}$ and $\mathcal{E}_2$ has $\{B_j\}$, then
+    \[
+    (\mathcal{E}_2 \circ \mathcal{E}_1)(\rho)
+    = \sum_{i,j} B_j A_i\,\rho\,A_i^\dagger B_j^\dagger.
+    \]
+    \item All numerical simulations use the matrix forms listed here.
+\end{itemize}
+
+This completes the set of supplementary Kraus-operator examples for the project.

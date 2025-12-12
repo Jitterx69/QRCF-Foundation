@@ -1,0 +1,41 @@
+
+% -------------------------------------------------------
+% File: diagram1.tex
+% Diagram: High-Level Prophecy–Response Pipeline
+% -------------------------------------------------------
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=2.6cm,>=stealth,rounded corners]
+
+% Nodes
+\node[draw, thick, minimum width=2.6cm, minimum height=1.2cm]
+    (rho0) {$\rho$};
+
+\node[draw, thick, minimum width=3.0cm, minimum height=1.2cm, right=2.5cm of rho0]
+    (meas) {Prophecy Measurement \\ $M$};
+
+\node[draw, thick, minimum width=3.0cm, minimum height=1.2cm, right=2.5cm of meas]
+    (reg) {Regulator \\ $\rho_{\mathrm{rel}}$};
+
+\node[draw, thick, minimum width=3.0cm, minimum height=1.2cm, right=2.5cm of reg]
+    (agent) {Agent Response \\ $\pi$};
+
+\node[draw, thick, minimum width=3.0cm, minimum height=1.2cm, right=2.5cm of agent]
+    (world) {World Evolution \\ $\mathcal{E}$};
+
+\node[right=2.5cm of world] (end) {};
+
+% Arrows
+\draw[->, thick] (rho0) -- (meas);
+\draw[->, thick] (meas) -- (reg);
+\draw[->, thick] (reg) -- (agent);
+\draw[->, thick] (agent) -- (world);
+\draw[->, thick] (world) -- (end) node[right] {$\Phi^{\mathcal{Q}}(\rho)$};
+
+% Feedback arrow
+\draw[->, thick] (world) .. controls +(0,2.5) and +(0,2.5) .. (rho0)
+    node[midway, above] {iteration};
+
+\caption{High-level flow of the prophecy–response pipeline defining $\Phi^{\mathcal{Q}}$.}
+\end{figure}

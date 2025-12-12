@@ -1,0 +1,252 @@
+% -------------------------------------------------------
+% APPENDIX C: ENTROPY AND INFORMATION INEQUALITIES
+% -------------------------------------------------------
+
+This appendix collects the entropy inequalities, continuity bounds, and mutual-information
+properties used in the analysis of leakage constraints and ethical regulation. All Hilbert spaces are
+assumed finite-dimensional unless stated otherwise.
+
+% -------------------------------------------------------
+\subsection{Basic Properties of the von Neumann Entropy}
+
+\begin{lemma}[Bounds on Entropy]
+Let $\rho \in \mathcal{D}(\mathcal{H})$ and $d = \dim(\mathcal{H})$. Then
+\[
+0 \le S(\rho) \le \log d.
+\]
+\end{lemma}
+
+\begin{proof}
+Positivity follows from $S(\rho) = -\operatorname{Tr}(\rho\log\rho)$ and the fact that eigenvalues of
+$\rho$ lie in $[0,1]$. The upper bound is achieved when $\rho = \tfrac{\id}{d}$.
+\end{proof}
+
+\begin{lemma}[Concavity of Entropy]
+For density matrices $\rho,\sigma$ and $\lambda\in[0,1]$,
+\[
+S(\lambda\rho + (1-\lambda)\sigma) \ge \lambda S(\rho) + (1-\lambda) S(\sigma).
+\]
+\end{lemma}
+
+This plays a key role in bounding mutual information under convex mixtures.
+
+% -------------------------------------------------------
+\subsection{Fannes--Audenaert Continuity Bounds}
+
+\begin{theorem}[Fannes--Audenaert Inequality]
+Let $\rho,\sigma \in \mathcal{D}(\mathcal{H})$ satisfy $\|\rho - \sigma\|_1 = \delta \le 1/e$. Then
+\[
+|S(\rho) - S(\sigma)|
+\le \delta \log(d-1) - \delta \log\delta.
+\]
+\end{theorem}
+
+\begin{proof}
+Standard proof via majorization and continuity of logarithms; see classical derivations of the
+Fannes bound.
+\end{proof}
+
+\begin{corollary}[Continuity of Marginals]
+Let $\rho_{AB},\sigma_{AB}$ be bipartite states with
+$\|\rho_{AB}-\sigma_{AB}\|_1 \le \delta$. Then
+\[
+|S(\rho_A) - S(\sigma_A)| \le \delta \log(d_A - 1) - \delta\log\delta.
+\]
+\end{corollary}
+
+This is needed to bound leakage sensitivity under perturbations.
+
+% -------------------------------------------------------
+\subsection{Mutual Information Identities and Inequalities}
+
+Recall the definition for bipartite systems:
+\[
+I(A;B)_\rho = S(\rho_A) + S(\rho_B) - S(\rho_{AB}).
+\]
+
+\begin{lemma}[Non-negativity]
+\[
+I(A;B)_\rho \ge 0.
+\]
+\end{lemma}
+
+\begin{proof}
+Immediate from strong subadditivity.
+\end{proof}
+
+\begin{lemma}[Upper Bound]
+\[
+I(A;B)_\rho \le 2 \log d_{\min},
+\]
+where $d_{\min} = \min(d_A,d_B)$.
+\end{lemma}
+
+\begin{proof}
+Follows from $S(\rho_X)\le \log d_X$.
+\end{proof}
+
+\begin{theorem}[Data Processing Inequality]
+For any CPTP map $\mathcal{E}_B$,
+\[
+I(A;B)_\rho \ge I(A;B')_{(\id\otimes\mathcal{E}_B)(\rho)}.
+\]
+\end{theorem}
+
+\begin{proof}
+Standard consequence of monotonicity of relative entropy under CPTP maps.
+\end{proof}
+
+This establishes the theoretical justification for:
+- regulator-induced information reductions,
+- contractive behavior in leakage-control.
+
+% -------------------------------------------------------
+\subsection{Depolarizing Channel Information Bounds}
+
+Consider the regulator channel
+\[
+\rho_{\mathrm{rel}}(\sigma)
+= (1-\lambda)\sigma + \lambda \frac{\id_V}{2}\otimes \operatorname{Tr}_V(\sigma).
+\]
+
+\begin{lemma}[Mutual Information Contraction]
+For any bipartite state $\rho_{XV}$,
+\[
+I(X;V_{\mathrm{rel}}) \le (1-\lambda) I(X;V).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $\mathcal{D}_{\lambda}$ denote the depolarizing channel. Using the convex decomposition:
+\[
+\mathcal{D}_{\lambda}(\cdot) = (1-\lambda)(\cdot) + \lambda \tfrac{\id}{2}\operatorname{Tr}(\cdot),
+\]
+we have
+\[
+\rho_{XV_{\mathrm{rel}}}
+= (1-\lambda)\rho_{XV} + \lambda (\rho_X \otimes \tfrac{\id}{2}).
+\]
+By concavity of entropy and convexity properties of mutual information (shown below), the
+mutual information is reduced by at least the factor $(1-\lambda)$.
+\end{proof}
+
+\begin{corollary}[Leakage Suppression]
+Regulator depolarization suppresses leakage:
+\[
+\lambda \uparrow \quad\Rightarrow\quad I(X;V_{\mathrm{rel}}) \downarrow.
+\]
+\end{corollary}
+
+This is a key mechanism for ethical feasibility.
+
+% -------------------------------------------------------
+\subsection{Convexity and Concavity Inequalities}
+
+\begin{lemma}[Convexity of Conditional Entropy]
+The conditional entropy
+\[
+S(A|B)_\rho = S(\rho_{AB}) - S(\rho_B)
+\]
+is concave in $\rho_{AB}$.
+\end{lemma}
+
+\begin{lemma}[Convexity of Mutual Information]
+$I(A;B)_\rho$ is jointly convex in the pair $(\rho_{AB}, -\rho_{AB})$; more explicitly, for any
+$\rho_{AB}, \sigma_{AB}$,
+\[
+I(A;B)_{\lambda\rho + (1-\lambda)\sigma}
+\le \lambda I(A;B)_\rho + (1-\lambda)I(A;B)_\sigma.
+\]
+\end{lemma}
+
+\begin{proof}
+Follows from concavity of entropy and linearity of partial trace.
+\end{proof}
+
+This property is used in the leakage analysis where the regulator outputs mixtures.
+
+% -------------------------------------------------------
+\subsection{Bounds Used in Ethical Regulation Optimization}
+
+The harm functional is
+\[
+H(\rho) = c_1 P_{\mathrm{crash}}(\rho) + c_2\|\rho - M(\rho)\|_1.
+\]
+
+\begin{lemma}[Lipschitz Continuity of Harm under Trace Norm]
+There exists a constant $C>0$ such that
+\[
+|H(\rho) - H(\sigma)| \le C\|\rho - \sigma\|_1.
+\]
+\end{lemma}
+
+\begin{proof}
+The crash probability term is linear in $\rho$. The disturbance norm $\|\rho - M(\rho)\|_1$ is
+Lipschitz because $M$ is non-expansive. Combine via triangle inequality.
+\end{proof}
+
+\begin{lemma}[Continuity of Value Function]
+If $\Phi^{\mathcal{Q}}$ is contractive, then the ethical value function $V(\rho)$ satisfies
+\[
+|V(\rho) - V(\sigma)| \le \frac{C}{1-k}\|\rho - \sigma\|_1,
+\]
+where $k<1$ is the contraction constant.
+\end{lemma}
+
+\begin{proof}
+Standard fixed-point sensitivity result for Bellman equations with contraction.
+\end{proof}
+
+% -------------------------------------------------------
+\subsection{Continuity of Mutual Information Under Small Perturbations}
+
+\begin{theorem}[Continuity of Mutual Information]
+Let $\rho_{AB},\sigma_{AB}$ satisfy $\|\rho_{AB}-\sigma_{AB}\|_1 \le \delta$. Then
+\[
+|I(A;B)_\rho - I(A;B)_\sigma|
+\le 4\delta \log d_{\min} - 2\delta\log\delta,
+\]
+for $\delta \le 1/e$.
+\end{theorem}
+
+\begin{proof}
+Expand the difference:
+\[
+I(A;B)_\rho - I(A;B)_\sigma
+= (S(\rho_A)-S(\sigma_A))
+ + (S(\rho_B)-S(\sigma_B))
+ - (S(\rho_{AB})-S(\sigma_{AB})).
+\]
+Apply the Fannes--Audenaert inequality to each term.
+\end{proof}
+
+This justifies stability of ethical leakage constraints under small perturbations.
+
+% -------------------------------------------------------
+\subsection{Leakage Thresholds and Contractive Regimes}
+
+Combining the above inequalities allows derivation of practical sufficient conditions:
+
+\begin{theorem}[Leakage-Contraction Compatibility]
+If
+\[
+\lambda > 0
+\qquad\text{and}\qquad
+(1-\lambda)I(X;V) \le \epsilon,
+\]
+then both:
+\begin{enumerate}
+\item the leakage constraint is satisfied, and
+\item $\Phi^{\mathcal{Q}}$ is contractive with constant $(1-\lambda)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Part (1) follows directly from the depolarizing contraction of mutual information:
+\[
+I(X;V_{\mathrm{rel}}) \le (1-\lambda)I(X;V).
+\]
+Part (2) follows from Appendix B.6.
+\end{proof}
+
+This condition unifies the ethical and dynamical stability requirements into one inequality.

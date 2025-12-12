@@ -1,0 +1,223 @@
+% -------------------------------------------------------
+% APPENDIX B: OPERATOR NORM BOUNDS
+% -------------------------------------------------------
+
+This appendix establishes operator-norm inequalities used throughout the monograph. These
+results justify contraction bounds, measurement-disturbance inequalities, and continuity arguments
+for the prophecy--response operator $\Phi^{\mathcal{Q}}$.
+
+Throughout, $\|\cdot\|_1$ denotes the trace norm, $\|\cdot\|_2$ the Hilbert--Schmidt norm,
+$\|\cdot\|_\infty$ the operator norm, and $\mathcal{D}(\mathcal{H})$ the space of density operators on
+a finite-dimensional Hilbert space $\mathcal{H}$.
+
+% -------------------------------------------------------
+\subsection{Basic Relationships Between Operator Norms}
+
+\begin{lemma}[Norm Dominance]
+For all $A\in\mathcal{B}(\mathcal{H})$,
+\[
+    \|A\|_1 \le \sqrt{d}\,\|A\|_2 \le d\,\|A\|_\infty,
+\]
+where $d=\dim(\mathcal{H})$.
+\end{lemma}
+
+\begin{proof}
+The inequalities $\|A\|_1 \le \sqrt{d}\|A\|_2$ and $\|A\|_2 \le \sqrt{d}\|A\|_\infty$ follow from
+standard Schatten-norm relationships.
+\end{proof}
+
+\begin{corollary}
+For density operators $\rho,\sigma$,
+\[
+    \|\rho - \sigma\|_1 \le 2.
+\]
+\end{corollary}
+
+This bound will be used for global Lipschitz estimates.
+
+% -------------------------------------------------------
+\subsection{Bounds for CPTP Maps}
+
+\begin{lemma}[Non-expansiveness of Quantum Channels]
+\label{lem:nonexp}
+For any CPTP map $\mathcal{E}$ and any density matrices $\rho,\sigma$,
+\[
+    \|\mathcal{E}(\rho) - \mathcal{E}(\sigma)\|_1 \le \|\rho - \sigma\|_1.
+\]
+\end{lemma}
+
+\begin{proof}
+This is a standard result in quantum information theory: CPTP maps are contractions in trace
+distance because the trace norm is monotone under quantum operations.
+\end{proof}
+
+\begin{remark}
+Lemma~\ref{lem:nonexp} applies to $M$, $\rho_{\mathrm{rel}}$, $\pi$, and $\mathcal{E}$ individually.
+\end{remark}
+
+% -------------------------------------------------------
+\subsection{Measurement-Disturbance Inequalities}
+
+We derive bounds relating measurement sharpness $\alpha$ to disturbance.
+
+Recall the POVM elements
+\[
+E_0 = (1-\alpha)\tfrac{\id}{2} + \alpha\ket{0}\!\bra{0},\qquad
+E_1 = (1-\alpha)\tfrac{\id}{2} + \alpha\ket{1}\!\bra{1},
+\]
+with associated Kraus operators $M_i=\sqrt{E_i}$.
+
+\begin{lemma}[Disturbance Bound]
+For any $\rho\in\mathcal{D}(\mathcal{H})$,
+\[
+    \| \rho - M(\rho) \|_1 \le 2\alpha.
+\]
+\end{lemma}
+
+\begin{proof}
+Since $M$ interpolates between the identity ($\alpha=0$) and a projective measurement
+($\alpha=1$), its deviation from the identity map is at most $\alpha$ in each measurement branch.
+Estimating the sum yields a bound of $2\alpha$.
+\end{proof}
+
+\begin{corollary}
+If $\alpha$ is small, the measurement induces minimal disturbance:
+\[
+\alpha \ll 1 \quad\Rightarrow\quad \|\rho - M(\rho)\|_1 = O(\alpha).
+\]
+\end{corollary}
+
+This bound supports ethical constraints on disturbance penalties.
+
+% -------------------------------------------------------
+\subsection{Regulator Bounds for the Depolarizing Channel}
+
+The regulator applies
+\[
+\rho_{\mathrm{rel}}(\sigma) = (1-\lambda)\sigma + \lambda\tfrac{\id}{2}\otimes\Tr_V(\sigma).
+\]
+
+\begin{lemma}[Depolarizing Contraction Bound]
+For all $\sigma,\tau\in\mathcal{D}(\mathcal{H})$,
+\[
+\|\rho_{\mathrm{rel}}(\sigma) - \rho_{\mathrm{rel}}(\tau)\|_1
+\le (1-\lambda)\|\sigma - \tau\|_1.
+\]
+\end{lemma}
+
+\begin{proof}
+The second component of the depolarizing channel is independent of the input, so differences
+cancel:
+\[
+\rho_{\mathrm{rel}}(\sigma) - \rho_{\mathrm{rel}}(\tau)
+= (1-\lambda)(\sigma - \tau).
+\]
+Taking trace norm gives the result.
+\end{proof}
+
+Thus $\lambda$ directly controls contraction strength.
+
+% -------------------------------------------------------
+\subsection{Bounds for the Agent Response Operator $\pi$}
+
+\begin{lemma}[Unitary Preservation of Trace Norm]
+For any unitary $U$ and operator $A$,
+\[
+\|UAU^\dagger\|_1 = \|A\|_1.
+\]
+\end{lemma}
+
+Since $\pi$ is built from conjugation by unitaries and the measurement instrument $M$:
+
+\begin{proposition}
+\[
+\|\pi(\rho) - \pi(\sigma)\|_1 \le \|\rho - \sigma\|_1.
+\]
+\end{proposition}
+
+\begin{proof}
+Apply Lemma~\ref{lem:nonexp} to the measurement instrument followed by trace-norm preservation
+of unitary conjugation.
+\end{proof}
+
+% -------------------------------------------------------
+\subsection{Global Lipschitz Bound for $\Phi^{\mathcal{Q}}$}
+
+We derive an upper bound on the Lipschitz constant of the entire operator.
+
+\begin{theorem}[Lipschitz Constant of the Prophecy--Response Operator]
+Let
+\[
+\Phi^{\mathcal{Q}}
+= \mathcal{E}\circ\pi\circ\rho_{\mathrm{rel}}\circ M.
+\]
+Then for all $\rho,\sigma$,
+\[
+\|\Phi^{\mathcal{Q}}(\rho) - \Phi^{\mathcal{Q}}(\sigma)\|_1
+\le (1-\lambda)\|\rho - \sigma\|_1.
+\]
+\end{theorem}
+
+\begin{proof}
+Apply the following inequalities sequentially:
+\[
+\|M(\rho) - M(\sigma)\|_1 \le \|\rho - \sigma\|_1,
+\]
+\[
+\|\rho_{\mathrm{rel}}(A) - \rho_{\mathrm{rel}}(B)\|_1 \le (1-\lambda)\|A - B\|_1,
+\]
+\[
+\|\pi(A) - \pi(B)\|_1 \le \|A - B\|_1,
+\]
+\[
+\|\mathcal{E}(A) - \mathcal{E}(B)\|_1 \le \|A - B\|_1.
+\]
+Multiplying the inequalities gives the result.
+\end{proof}
+
+\begin{corollary}[Sufficient Condition for Contraction]
+If $\lambda>0$, then $\Phi^{\mathcal{Q}}$ is strictly contractive:
+\[
+\|\Phi^{\mathcal{Q}}(\rho)-\Phi^{\mathcal{Q}}(\sigma)\|_1 \le (1-\lambda)\|\rho - \sigma\|_1.
+\]
+\end{corollary}
+
+This is the key condition for unique reflexive equilibria.
+
+% -------------------------------------------------------
+\subsection{Bound on the Difference Between Fixed Points Under Parameter Perturbation}
+
+Let $\Phi^{\mathcal{Q}}_{\lambda,\alpha}$ denote the operator with explicit parameter dependence.
+
+\begin{theorem}[Fixed-Point Sensitivity]
+Suppose $\Phi^{\mathcal{Q}}_{\lambda,\alpha}$ and $\Phi^{\mathcal{Q}}_{\lambda',\alpha'}$ are contractive
+with constants $k,k'<1$. Let $\rho^\ast$ and ${\rho^\ast}'$ be their fixed points. Then
+\[
+\|\rho^\ast - {\rho^\ast}'\|_1
+\le \frac{1}{1-k}\,
+\|\Phi^{\mathcal{Q}}_{\lambda,\alpha}(\rho^\ast)
+ - \Phi^{\mathcal{Q}}_{\lambda',\alpha'}(\rho^\ast)\|_1.
+\]
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+\|\rho^\ast - {\rho^\ast}'\|_1
+= \|\Phi_{\lambda,\alpha}(\rho^\ast) - \Phi_{\lambda',\alpha'}({\rho^\ast}')\|_1
+\]
+and add/subtract $\Phi_{\lambda',\alpha'}(\rho^\ast)$ to obtain
+\[
+\le \|\Phi_{\lambda,\alpha}(\rho^\ast) - \Phi_{\lambda',\alpha'}(\rho^\ast)\|_1
+  + \|\Phi_{\lambda',\alpha'}(\rho^\ast) - \Phi_{\lambda',\alpha'}({\rho^\ast}')\|_1.
+\]
+The second term is bounded by $k\|\rho^\ast - {\rho^\ast}'\|_1$, yielding
+\[
+(1-k)\|\rho^\ast - {\rho^\ast}'\|_1
+\le \|\Delta\Phi(\rho^\ast)\|_1.
+\]
+Divide through by $(1-k)$.
+\end{proof}
+
+This quantifies how regulator choices affect the equilibrium.
+

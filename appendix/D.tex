@@ -1,0 +1,240 @@
+% -------------------------------------------------------
+% APPENDIX D: ADDITIONAL LEMMAS AND AUXILIARY TECHNICAL TOOLS
+% -------------------------------------------------------
+
+This appendix contains supplementary mathematical tools used throughout the monograph.
+The lemmas collected here are standard but adapted explicitly to the finite-dimensional setting of
+the prophecy--response operator $\Phi^{\mathcal{Q}}$. They include spectral bounds, convexity
+results, monotonicity inequalities, dilation constructions, and matrix-norm relationships.
+
+Throughout, $\mathcal{B}(\mathcal{H})$ denotes bounded operators on $\mathcal{H}$, SVD denotes
+singular-value decomposition, and $\|\cdot\|_p$ denotes Schatten-$p$ norms.
+
+% -------------------------------------------------------
+\subsection{Spectral Inequalities}
+
+\begin{lemma}[Weyl’s Inequality]
+Let $A,B \in \mathcal{B}(\mathcal{H})$ be Hermitian. Let $\lambda_i(\cdot)$ denote eigenvalues in
+non-increasing order. Then
+\[
+\lambda_i(A)+\lambda_d(B) \le \lambda_i(A+B) \le \lambda_i(A)+\lambda_1(B).
+\]
+\end{lemma}
+
+\begin{proof}
+Standard interlacing argument based on min-max principles.
+\end{proof}
+
+\begin{lemma}[Eigenvalue Perturbation Bound]
+For Hermitian $A,B$,
+\[
+|\lambda_i(A) - \lambda_i(B)| \le \|A-B\|_\infty.
+\]
+\end{lemma}
+
+Useful for bounding spectral changes across iterations of $\Phi^{\mathcal{Q}}$.
+
+% -------------------------------------------------------
+\subsection{Singular Value and Trace-Norm Tools}
+
+\begin{lemma}[Fan’s Dominance Principle]
+Let $s_i(\cdot)$ denote singular values. For any $A,B\in\mathcal{B}(\mathcal{H})$,
+\[
+\sum_{i=1}^k s_i(A+B)
+\le \sum_{i=1}^k \left(s_i(A) + s_i(B)\right).
+\]
+\end{lemma}
+
+\begin{corollary}[Trace-Norm Subadditivity]
+\[
+\|A+B\|_1 \le \|A\|_1 + \|B\|_1.
+\]
+\end{corollary}
+
+\begin{lemma}[Hoffman–Wielandt Inequality]
+For Hermitian $A,B$ with eigenvalues $\lambda_i,\mu_i$,
+\[
+\sum_i |\lambda_i - \mu_i|^2 \le \|A-B\|_2^2.
+\]
+\end{lemma}
+
+Important for bounding entropy sensitivity.
+
+% -------------------------------------------------------
+\subsection{Operator Convexity and Monotonicity}
+
+\begin{lemma}[Operator Convexity of $x^2$]
+For Hermitian $A,B$ and $\lambda\in[0,1]$,
+\[
+(\lambda A + (1-\lambda)B)^2
+\le \lambda A^2 + (1-\lambda)B^2.
+\]
+\end{lemma}
+
+\begin{lemma}[Operator Monotonicity of $\log$]
+If $0 \prec A \preceq B$, then
+\[
+\log A \preceq \log B.
+\]
+\end{lemma}
+
+\begin{corollary}[Monotonicity of Relative Entropy]
+For $0\prec A,B$,
+\[
+D(A\|B) \ge 0.
+\]
+\end{corollary}
+
+These inequalities support the analysis of entropic leakage constraints.
+
+% -------------------------------------------------------
+\subsection{Useful Matrix Inequalities for CPTP Maps}
+
+\begin{lemma}[Kadison Inequality]
+For any unital CP map $\mathcal{E}$ and Hermitian $A$,
+\[
+\mathcal{E}(A^2) \succeq \mathcal{E}(A)^2.
+\]
+\end{lemma}
+
+\begin{lemma}[Schwarz Inequality for CP Maps]
+For CP map $\mathcal{E}$,
+\[
+\mathcal{E}(A^\dagger A) \succeq \mathcal{E}(A^\dagger)\mathcal{E}(A).
+\]
+\end{lemma}
+
+\begin{corollary}[Trace-Distance Monotonicity]
+\[
+\|\mathcal{E}(\rho) - \mathcal{E}(\sigma)\|_1 \le \|\rho - \sigma\|_1.
+\]
+\end{corollary}
+
+This is implicitly used in multiple stability proofs.
+
+% -------------------------------------------------------
+\subsection{Stinespring Dilation Tools}
+
+\begin{lemma}[Stinespring Representation]
+Any CPTP map $\mathcal{E}:\mathcal{B}(\mathcal{H})\to\mathcal{B}(\mathcal{H}')$  
+admits an isometry $V:\mathcal{H}\to\mathcal{H}'\otimes\mathcal{K}$ such that
+\[
+\mathcal{E}(\rho)=\operatorname{Tr}_{\mathcal{K}}(V\rho V^\dagger).
+\]
+\end{lemma}
+
+\begin{lemma}[Minimal Dilation Dimension]
+If $\mathcal{E}$ has $r$ Kraus operators, one may take $\dim(\mathcal{K}) = r$.
+\end{lemma}
+
+\begin{corollary}[Computational Simulation Embedding]
+Any reversible computation can be embedded into a unitary component of $\Phi^{\mathcal{Q}}$.
+\end{corollary}
+
+Used in Appendix A.8 for embedding Turing machines.
+
+% -------------------------------------------------------
+\subsection{Trotter and Product-Formula Bounds}
+
+\begin{lemma}[First-Order Trotter Error]
+Let $A,B$ be bounded Hermitian operators. Then
+\[
+\|e^{t(A+B)} - (e^{tA} e^{tB})^n\|_\infty
+\le \frac{t^2\|[A,B]\|_\infty}{2n}.
+\]
+\end{lemma}
+
+\begin{proof}
+Standard Lie--Trotter analysis.
+\end{proof}
+
+This lemma is useful for approximating continuous-time prophecy dynamics if extending this
+framework to Lindbladian evolution.
+
+% -------------------------------------------------------
+\subsection{Bounds Relating Entropy and Trace Distance}
+
+\begin{lemma}[Pinsker Inequality]
+For density matrices $\rho,\sigma$,
+\[
+D(\rho\|\sigma) \ge \frac{1}{2\ln 2}\|\rho - \sigma\|_1^2.
+\]
+\end{lemma}
+
+\begin{lemma}[Alicki–Fannes Inequality]
+For a bipartite state $\rho_{AB}$,
+\[
+|S(A|B)_\rho - S(A|B)_\sigma|
+\le 4\epsilon \log d_A + 2h(\epsilon),
+\quad \epsilon=\tfrac12\|\rho_{AB}-\sigma_{AB}\|_1,
+\]
+where $h$ is the binary entropy.
+\end{lemma}
+
+These are used in Appendix C.
+
+% -------------------------------------------------------
+\subsection{Auxiliary Lemmas for Fixed-Point Stability}
+
+\begin{lemma}[Non-Expansive Composition]
+If $\mathcal{E}_1,\mathcal{E}_2$ satisfy
+\[
+\|\mathcal{E}_1(X)-\mathcal{E}_1(Y)\|_1 \le k_1\|X-Y\|_1,\qquad
+\|\mathcal{E}_2(X)-\mathcal{E}_2(Y)\|_1 \le k_2\|X-Y\|_1,
+\]
+then
+\[
+\|\mathcal{E}_2\circ\mathcal{E}_1(X)-\mathcal{E}_2\circ\mathcal{E}_1(Y)\|_1
+\le k_1 k_2 \|X-Y\|_1.
+\]
+\end{lemma}
+
+\begin{proof}
+Direct substitution in the second inequality using the first.
+\end{proof}
+
+\begin{theorem}[Global Stability Criterion]
+If $\Phi^{\mathcal{Q}}$ satisfies
+\[
+\|\Phi^{\mathcal{Q}}(\rho)-\Phi^{\mathcal{Q}}(\sigma)\|_1 \le k \|\rho-\sigma\|_1,
+\quad k<1,
+\]
+then all perturbations decay exponentially:
+\[
+\|(\Phi^{\mathcal{Q}})^t(\rho)-(\Phi^{\mathcal{Q}})^t(\sigma)\|_1 \le k^t\|\rho-\sigma\|_1.
+\]
+\end{theorem}
+
+This theorem supports Section 7's stability results.
+
+% -------------------------------------------------------
+\subsection{Auxiliary Materials for Ethical Optimization}
+
+\begin{lemma}[Convexity of Harm Functional Components]
+Both $P_{\mathrm{crash}}(\rho)$ and $\|\rho - M(\rho)\|_1$ are convex in $\rho$.
+\end{lemma}
+
+\begin{proof}
+$P_{\mathrm{crash}}(\rho)$ is linear. For the disturbance term:
+\[
+\lambda\|\rho_1 - M(\rho_1)\|_1 + (1-\lambda)\|\rho_2 - M(\rho_2)\|_1
+\ge \|\lambda\rho_1+(1-\lambda)\rho_2 - M(\lambda\rho_1+(1-\lambda)\rho_2)\|_1
+\]
+by non-expansiveness and triangle inequality.
+\end{proof}
+
+\begin{lemma}[Bellman Operator Contraction]
+The Bellman operator
+\[
+(TV)(\rho)=\min_{u\in\mathcal{U}}\Big(H(\rho)+\gamma V(\Phi^{\mathcal{Q}}_u(\rho))\Big)
+\]
+is a contraction with modulus $\gamma k$, where $k$ is the contraction constant of
+$\Phi^{\mathcal{Q}}_u$.
+\end{lemma}
+
+\begin{proof}
+Standard dynamic-programming contraction proof.
+\end{proof}
+
+This underpins the existence of an optimal regulator policy.
+

@@ -1,0 +1,175 @@
+% -------------------------------------------------------
+% SECTION 1: INTRODUCTION
+% -------------------------------------------------------
+
+Predictive systems in classical settings are traditionally conceived as passive observers of the world:
+they estimate or forecast future states without altering the underlying dynamics. However, in
+many real and theoretical environments, the act of revealing a prediction itself affects the world it
+describes. This phenomenon---which we refer to as \emph{prophecy} rather than prediction---is
+endogenously reflexive and can fundamentally reshape causal, informational, and strategic structures.
+
+Classical models of prophecy rely on stochastic or game-theoretic frameworks, whereas quantum
+prophecy requires a more sophisticated formulation: information is encoded in density operators,
+its extraction induces unavoidable disturbance, and attempts to disseminate prophetic information
+are constrained by quantum no-cloning principles and entropic limits. When agents respond to
+released prophecy and environments evolve through completely positive trace-preserving (CPTP)
+maps, the prediction process becomes inseparable from the world it influences.
+
+This monograph introduces a formal mathematical theory of \emph{Quantum Reflexive Control}
+(QRC). We construct a composite operator
+\[
+    \Phi^{\mathcal{Q}} : \mathcal{D}(\mathcal{H}) \to \mathcal{D}(\mathcal{H}),
+\]
+acting on the space of density operators of a finite-dimensional Hilbert space~$\mathcal{H}$,
+representing the combined evolution of prophetic measurement, regulator-controlled information
+release, agent responses, and environmental CPTP dynamics. The operator $\Phi^{\mathcal{Q}}$ is a
+quantum analogue of classical reflexive prophecy-response maps, enriched with measurement-induced
+disturbance and constrained by ethical information bottlenecks.
+
+We provide a complete formal construction:
+\begin{enumerate}[label=(\roman*)]
+    \item a definition of the quantum prophetic world and its memory structure;
+    \item an explicit parameterization of measurement instruments and regulator channels;
+    \item a definition of agent response maps represented as conditional unitary channels;
+    \item a full operator-theoretic description of $\Phi^{\mathcal{Q}}$;
+    \item proofs that $\Phi^{\mathcal{Q}}$ is CPTP under mild assumptions;
+    \item sufficient conditions for the existence of reflexive fixed points;
+    \item ethical feasibility conditions via entropic leakage bounds and harm functionals;
+    \item operator-theoretic constraints arising from computational impossibility.
+\end{enumerate}
+
+The remainder of this work is structured as follows.
+Section~2 establishes mathematical preliminaries in Hilbert spaces, density operators, CPTP maps,
+and measurement theory. Section~3 introduces the quantum prophetic world and its state structure.
+Section~4 defines the prophecy--response operator and derives its fundamental properties. Section~5
+develops the ethical control layer and corresponding optimization problem. Section~6 introduces
+computability-theoretic boundaries for prophecy. Section~7 presents a unified theorem series on
+existence, impossibility, stability, and ethical constraints. Section~8 provides an explicit example with
+fully worked CPTP maps, POVMs, and regulator channels. The appendices contain additional proofs,
+operator norm bounds, and entropy inequalities.
+
+This monograph lays the formal foundation for the design of Quantum Reflexive Control Engines
+(QRCEs), systems capable of stabilizing reflexive quantum prophecy under physical, ethical, and
+computational constraints.
+
+% -------------------------------------------------------
+% SECTION 2: MATHEMATICAL PRELIMINARIES
+% -------------------------------------------------------
+\section{Mathematical Preliminaries}
+
+This section introduces the operator-theoretic and quantum-mechanical definitions required for
+the construction of $\Phi^{\mathcal{Q}}$. Throughout, we assume all Hilbert spaces are finite-dimensional.
+
+\subsection{Hilbert Spaces and Operators}
+
+Let $\mathcal{H}$ be a finite-dimensional Hilbert space equipped with inner product
+$\langle \cdot, \cdot \rangle$. We denote by $\mathcal{B}(\mathcal{H})$ the space of linear operators on
+$\mathcal{H}$, and by $\mathcal{D}(\mathcal{H})$ the set of density operators:
+\[
+    \mathcal{D}(\mathcal{H}) = 
+    \left\{
+        \rho \in \mathcal{B}(\mathcal{H}) :
+        \rho \succeq 0,\;
+        \mathrm{Tr}(\rho) = 1
+    \right\}.
+\]
+
+\begin{definition}[Partial Trace]
+Let $\mathcal{H} = \mathcal{H}_A \otimes \mathcal{H}_B$. The partial trace over subsystem~$B$ is the
+unique linear map
+\[
+    \mathrm{Tr}_B : \mathcal{B}(\mathcal{H}) \to \mathcal{B}(\mathcal{H}_A)
+\]
+satisfying
+\[
+    \mathrm{Tr}_B(A \otimes B) = (\mathrm{Tr}\,B)\, A
+\]
+for all $A \in \mathcal{B}(\mathcal{H}_A)$ and $B \in \mathcal{B}(\mathcal{H}_B)$.
+\end{definition}
+
+\begin{definition}[Von Neumann Entropy]
+For $\rho \in \mathcal{D}(\mathcal{H})$, the von Neumann entropy is
+\[
+    S(\rho) = - \mathrm{Tr}(\rho \log \rho).
+\]
+\end{definition}
+
+\subsection{Positive and Completely Positive Maps}
+
+A linear operator $T : \mathcal{B}(\mathcal{H}) \to \mathcal{B}(\mathcal{H})$ is \emph{positive} if
+$T(X) \succeq 0$ whenever $X \succeq 0$.
+
+\begin{definition}[Complete Positivity]
+A linear map $T : \mathcal{B}(\mathcal{H}) \to \mathcal{B}(\mathcal{K})$ is \emph{completely positive}
+(CP) if for all $n \in \mathbb{N}$, the map
+\[
+    T \otimes \mathrm{id}_{n} : 
+    \mathcal{B}(\mathcal{H} \otimes \mathbb{C}^n)
+    \to 
+    \mathcal{B}(\mathcal{K} \otimes \mathbb{C}^n)
+\]
+is positive.
+\end{definition}
+
+\begin{definition}[CPTP Map]
+A completely positive map $T$ is \emph{trace-preserving} (TP) if
+$\mathrm{Tr}(T(X)) = \mathrm{Tr}(X)$ for all $X$. A \emph{CPTP map} is a completely positive,
+trace-preserving map.
+\end{definition}
+
+\begin{proposition}[Kraus Representation]
+A map $T$ is CPTP if and only if there exist operators $\{K_i\}$ such that
+\[
+    T(\rho) = \sum_i K_i \rho K_i^\dagger,
+    \qquad
+    \sum_i K_i^\dagger K_i = \id.
+\]
+\end{proposition}
+
+\subsection{Quantum Measurements}
+
+\begin{definition}[POVM]
+A positive operator-valued measure (POVM) on $\mathcal{H}$ is a finite collection of operators
+$\{E_i\} \subset \mathcal{B}(\mathcal{H})$ such that
+\[
+    E_i \succeq 0,\qquad \sum_i E_i = \id.
+\]
+\end{definition}
+
+A POVM defines measurement statistics but not state update. For that, we require instruments.
+
+\begin{definition}[Quantum Instrument]
+A quantum instrument is a set of CPTP maps $\{\mathcal{M}_i\}$ such that
+\[
+    \sum_i \mathcal{M}_i
+\]
+is CPTP. The post-measurement state given outcome $i$ is
+\[
+    \rho_i = \frac{\mathcal{M}_i(\rho)}{\mathrm{Tr}(\mathcal{M}_i(\rho))}.
+\]
+\end{definition}
+
+In this work, we use Kraus operators $\{M_i\}$ satisfying $E_i = M_i^\dagger M_i$.
+
+\subsection{Trace Norm and Contractions}
+
+\begin{definition}[Trace Norm]
+For $X \in \mathcal{B}(\mathcal{H})$, the trace norm is
+\[
+    \|X\|_1 = \mathrm{Tr}\sqrt{X^\dagger X}.
+\]
+\end{definition}
+
+\begin{definition}[Contraction]
+A map $T : \mathcal{D}(\mathcal{H}) \to \mathcal{D}(\mathcal{H})$ is a contraction if there exists 
+$0 \leq k < 1$ such that
+\[
+    \|T(\rho_1) - T(\rho_2)\|_1 \le k\, \|\rho_1 - \rho_2\|_1
+\]
+for all density operators $\rho_1, \rho_2$.
+\end{definition}
+
+Contractions guarantee unique fixed points by the Banach fixed-point theorem.
+
+This completes the preliminary operator-theoretic foundation required for the construction of
+the prophecy--response operator in Section~4.

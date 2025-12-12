@@ -1,0 +1,145 @@
+\documentclass[11pt]{article}
+
+% -------------------------------------------------------
+% PACKAGES
+% -------------------------------------------------------
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{mathtools}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage{physics}
+\usepackage{authblk}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{float} % <-- added for [H] figure placement
+
+% TikZ libraries (needed for all diagrams)
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, calc}
+
+% Graphics path for figures/
+\graphicspath{{figures/}}
+
+% -------------------------------------------------------
+% THEOREM ENVIRONMENTS
+% -------------------------------------------------------
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\theoremstyle{plain}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Corollary}
+
+\theoremstyle{remark}
+\newtheorem{remark}[definition]{Remark}
+
+% -------------------------------------------------------
+% CUSTOM COMMANDS
+% -------------------------------------------------------
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\id}{\mathbbm{1}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\braces}[1]{\left\{ #1 \right\}}
+
+% -------------------------------------------------------
+% TITLE AND AUTHORS
+% -------------------------------------------------------
+\title{
+{\Large \bf 
+A Quantum–Reflexive Control Framework for Prophetic Systems:}\\
+\vspace{0.2cm}
+{\large \bf Mathematical Foundations for CPTP Reflexivity, Ethical Regulation,\\
+and Computability-Limited Equilibria}
+}
+
+\author[1]{\textbf{Mohit Ranjan}}
+\affil[1]{C.V Raman Global University, Bhubaneswar, India}
+\date{}
+
+% -------------------------------------------------------
+% DOCUMENT START
+% -------------------------------------------------------
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We develop a fully formal mathematical framework for quantum prophetic systems whose predictions influence the world they describe. Building upon causal and reflexive theory, quantum measurement disturbance, ethical information bottlenecks, and computability-theoretic limits, we define a quantum prophecy–response operator $\Phi^{\mathcal{Q}}$ acting on density operators in finite-dimensional Hilbert spaces. We construct a complete operator-theoretic architecture integrating (i) CPTP world dynamics, (ii) measurement-induced disturbance, (iii) regulator-controlled information release, (iv) agent response policies, (v) ethical harm minimization, and (vi) computability-defined impossibility frontiers. We prove that the composed operator $\Phi^{\mathcal{Q}}$ is CPTP, give sufficient conditions for existence of reflexive fixed points, derive ethical feasibility constraints, and identify computability boundaries where perfect prophecy becomes impossible. A detailed toy model with explicit Kraus operators, POVMs, and regulator channels is provided, yielding implementable simulation pathways. This monograph establishes the foundational mathematics required for the development of Quantum Reflexive Control Engines (QRCEs).
+\end{abstract}
+
+\clearpage
+\tableofcontents
+
+% -------------------------------------------------------
+% SECTION 1: INTRODUCTION
+% -------------------------------------------------------
+\section{Introduction}
+\input{sections/I&II}
+
+% -------------------------------------------------------
+% SECTION 3: THE QUANTUM PROPHETIC WORLD
+% -------------------------------------------------------
+\section{The Quantum Prophetic World}
+\input{sections/III&IV}
+
+% -------------------------------------------------------
+% SECTION 5: ETHICAL CONTROL THEORY
+% -------------------------------------------------------
+\section{Ethical Control Theory}
+\input{sections/V&VI}
+
+% -------------------------------------------------------
+% SECTION 7: MAIN THEOREM SERIES
+% -------------------------------------------------------
+\section{Main Theorem Series}
+\input{sections/VII}
+
+% -------------------------------------------------------
+% SECTION 8: EXAMPLE IMPLEMENTATION
+% -------------------------------------------------------
+\section{Worked Example and Implementation}
+\input{sections/VIII}
+
+% -------------------------------------------------------
+% SECTION 9: DISCUSSION
+% -------------------------------------------------------
+\section{Discussion}
+\input{sections/IX}
+
+% -------------------------------------------------------
+% APPENDICES
+% -------------------------------------------------------
+\newpage
+\appendix
+
+\section{Appendix A: Expanded Proofs}
+\input{appendix/A.tex}
+
+\section{Appendix B: Operator Norm Bounds}
+\input{appendix/B.tex}
+
+\section{Appendix C: Entropy and Information Inequalities}
+\input{appendix/C.tex}
+
+\section{Appendix D: Additional Lemmas}
+\input{appendix/D.tex}
+
+\section{Appendix E: Numerical Methods, Algorithms, and Safety Analysis}
+\input{appendix/E.tex}
+
+\newpage
+\bibliographystyle{plain}
+\nocite{*}
+\bibliography{references}
+
+\end{document}

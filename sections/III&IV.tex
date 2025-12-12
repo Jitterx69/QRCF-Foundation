@@ -1,0 +1,256 @@
+% -------------------------------------------------------
+% SECTION 3: THE QUANTUM PROPHETIC WORLD
+% -------------------------------------------------------
+
+We now introduce the formal structure of a \emph{quantum prophetic world}. Unlike classical
+predictive systems, a prophetic world contains an explicit feedback loop: the act of revealing
+information about future states influences the evolution of those states. Our construction begins
+with the specification of the Hilbert space, the initial joint state, and the world dynamics.
+
+\subsection{State Space}
+
+Let $\mathcal{H} = \mathcal{H}_X \otimes \mathcal{H}_V$ where:
+\begin{itemize}[leftmargin=1.0cm]
+    \item $\mathcal{H}_X$ is the latent (future) variable register, typically encoding future
+    environmental states such as crash or non-crash conditions;
+    \item $\mathcal{H}_V$ is the prophecy register, entangled with $\mathcal{H}_X$ and accessible
+    to measurement by an observer or regulator.
+\end{itemize}
+
+For the concrete instantiation used throughout this monograph, each subsystem is a qubit,
+$\mathcal{H}_X \cong \mathbb{C}^2$ and $\mathcal{H}_V \cong \mathbb{C}^2$, although the following
+formalism extends to arbitrary finite dimensions.
+
+\subsection{Initial Joint State}
+
+\begin{definition}[Initial Prophetic State]
+An initial quantum prophetic world is given by a state $\rho_0 \in \mathcal{D}(\mathcal{H})$.
+For concreteness, we consider the one-parameter family
+\[
+    \rho_0 = \dyad{\psi_0},
+    \qquad
+    \ket{\psi_0}
+    = \sqrt{p}\,\ket{00} + \sqrt{1-p}\,\ket{11},
+\]
+with $p \in [0,1]$.
+\end{definition}
+
+This state has the property that the marginal of the prophecy register $\mathcal{H}_V$ contains
+information about the future latent state encoded in $\mathcal{H}_X$, but not perfectly so. Such
+partial predictability is essential for non-trivial prophetic behavior.
+
+\subsection{World Dynamics as a CPTP Evolution}
+
+The environment evolves according to a CPTP map $\mathcal{E}$ acting non-trivially on the latent
+register $\mathcal{H}_X$ and trivially on the prophecy register.
+
+\begin{definition}[World Evolution]
+A quantum prophetic world evolves under a map
+\[
+    \mathcal{E} : \mathcal{D}(\mathcal{H}) \to \mathcal{D}(\mathcal{H}),
+\]
+given in Kraus form by
+\[
+    \mathcal{E}(\rho)
+    =
+    \sum_{i}
+    (K_i \otimes \id_V) \, \rho \,
+    (K_i^\dagger \otimes \id_V),
+\]
+where $\{K_i\}$ are Kraus operators on $\mathcal{H}_X$ satisfying
+$\sum_i K_i^\dagger K_i = \id_X$.
+\end{definition}
+
+For explicitness, we adopt the amplitude-damping channel:
+\[
+    K_0 =
+    \begin{pmatrix}
+        1 & 0 \\
+        0 & \sqrt{1-\gamma}
+    \end{pmatrix},
+    \qquad
+    K_1 =
+    \begin{pmatrix}
+        0 & \sqrt{\gamma} \\
+        0 & 0
+    \end{pmatrix},
+\]
+where $\gamma \in [0,1]$ is a crash-probability amplification parameter.
+
+\begin{remark}
+Amplitude damping introduces asymmetry between the $\ket{0}$ and $\ket{1}$ states of the latent
+register, matching the intuition that “crash-like” failures may increase over time.
+\end{remark}
+
+\subsection{Raw Prophecy Extraction}
+
+\begin{definition}[Raw Prophecy Channel]
+The raw prophecy accessible to a measurement device is the marginal
+\[
+    \Phi_{\mathrm{raw}}(\rho) = \Tr_X(\rho) \in \mathcal{D}(\mathcal{H}_V).
+\]
+\end{definition}
+
+This captures the idea that prophecy consists of a (possibly lossy) viewpoint onto future states.
+
+\medskip
+This completes the formal definition of the quantum prophetic world. We now describe the
+measurement, regulatory, and agent-response mechanisms that interact with it.
+
+% -------------------------------------------------------
+% SECTION 4: THE PROPHECY–RESPONSE OPERATOR \Phi^{\mathcal{Q}}
+% -------------------------------------------------------
+\section{The Prophecy--Response Operator $\Phi^{\mathcal{Q}}$}
+
+We now formalize the fundamental operator governing the evolution of a quantum prophetic world
+when prophecy is observed, regulated, acted upon, and then propagated forward. The operator
+$\Phi^{\mathcal{Q}}$ integrates four components:
+\[
+    \Phi^{\mathcal{Q}}
+    =
+    \mathcal{E}
+    \circ
+    \pi
+    \circ
+    \rho_{\mathrm{rel}}
+    \circ
+    M.
+\]
+
+\subsection{Prophetic Measurement}
+
+Let $\{E_i\}$ be a binary POVM on $\mathcal{H}_V$ with sharpness parameter $\alpha$:
+\[
+    E_0 = (1-\alpha)\frac{\id}{2} + \alpha \dyad{0},
+    \qquad
+    E_1 = (1-\alpha)\frac{\id}{2} + \alpha \dyad{1}.
+\]
+
+\begin{definition}[Measurement Instrument]
+Define $M_i = \sqrt{E_i}$ and
+\[
+    M(\rho)
+    =
+    \sum_{i=0}^1
+    (\id_X \otimes M_i)\, \rho\,
+    (\id_X \otimes M_i^\dagger).
+\]
+\end{definition}
+
+By construction, $M$ is CPTP and physically implementable.
+
+\subsection{Regulated Prophecy Release}
+
+The regulator transforms the post-measurement reduced prophecy. We use a depolarizing channel.
+
+\begin{definition}[Regulator Channel]
+For $\lambda \in [0,1]$, define
+\[
+    \rho_{\mathrm{rel}}(\sigma)
+    =
+    (1-\lambda)\, \sigma + \lambda\, \frac{\id}{2}.
+\]
+This induces controlled information leakage.
+\end{definition}
+
+\subsection{Agent Response}
+
+Agents react to the released prophecy via conditional unitary updates.
+
+\begin{definition}[Agent Response Map]
+Let $U_0 = \id_X$ and $U_1 = X$ (Pauli-$X$ on $\mathcal{H}_X$). Define
+\[
+    \pi(\rho)
+    =
+    \sum_{i=0}^1
+    (U_i \otimes \id_V)\,
+    (\id_X \otimes M_i) \rho (\id_X \otimes M_i^\dagger)\,
+    (U_i^\dagger \otimes \id_V).
+\]
+\end{definition}
+
+This reflects a minimal model where the agent intervenes on the latent quantum state when prophecy
+indicates a potential crash.
+
+\subsection{Definition of the Combined Operator}
+
+\begin{definition}[Quantum Prophecy--Response Operator]
+The composed operator $\Phi^{\mathcal{Q}} : \mathcal{D}(\mathcal{H}) \to \mathcal{D}(\mathcal{H})$ is
+\[
+    \Phi^{\mathcal{Q}}(\rho)
+    =
+    \mathcal{E}\!\left(
+    \pi\!\left(
+        \rho_{\mathrm{rel}}(
+            M(\rho)
+        )
+    \right)
+    \right).
+\]
+\end{definition}
+
+We expand the full expression explicitly using Kraus operators.
+
+\begin{proposition}[Explicit Expansion]
+Let $\{K_j\}$ be the Kraus operators of $\mathcal{E}$. Then
+\[
+\begin{aligned}
+    \Phi^{\mathcal{Q}}(\rho)
+    &=
+    \sum_{j=0}^1
+    \sum_{i=0}^1
+    (K_j U_i \otimes M_i)
+    \Big[
+        (1-\lambda)\rho + \lambda\, \tfrac{\id}{4}
+    \Big]
+    (U_i^\dagger K_j^\dagger \otimes M_i^\dagger).
+\end{aligned}
+\]
+\end{proposition}
+
+\begin{proof}
+Each component map ($M$, $\rho_{\mathrm{rel}}$, $\pi$, $\mathcal{E}$) admits a Kraus representation.
+The sequential composition of CPTP maps is CPTP, and the Kraus operators multiply accordingly.
+\end{proof}
+
+\subsection{Basic Properties}
+
+\begin{theorem}[$\Phi^{\mathcal{Q}}$ is CPTP]
+The operator $\Phi^{\mathcal{Q}}$ is completely positive and trace preserving.
+\end{theorem}
+
+\begin{proof}
+Each constituent map is CPTP:
+\begin{itemize}
+    \item $M$ is CPTP as a measurement instrument;
+    \item $\rho_{\mathrm{rel}}$ is CPTP as a depolarizing channel;
+    \item $\pi$ is CPTP as a conditional unitary channel;
+    \item $\mathcal{E}$ is CPTP by definition.
+\end{itemize}
+The composition of CPTP maps is CPTP.
+\end{proof}
+
+\begin{theorem}[Sufficient Conditions for Contraction]
+If $0 < \lambda \le \lambda_0$, $0 \le \alpha \le \alpha_0$, and $0 \le \gamma \le \gamma_0$ for sufficiently
+small constants, then
+\[
+    \|\Phi^{\mathcal{Q}}(\rho_1) - \Phi^{\mathcal{Q}}(\rho_2)\|_1
+    \le k
+    \|\rho_1 - \rho_2\|_1
+\]
+for some $k < 1$.
+\end{theorem}
+
+\begin{proof}[Sketch]
+Each component map has Lipschitz constant at most~$1$. The depolarizing channel introduces
+strict contraction in trace norm; the remaining maps can be made arbitrarily close to isometries
+by taking $\alpha$ and $\gamma$ sufficiently small. The product of their Lipschitz constants is then
+less than~$1$.
+\end{proof}
+
+\begin{corollary}[Existence of Fixed Point]
+Under the above conditions, $\Phi^{\mathcal{Q}}$ admits a unique fixed point $\rho^\ast$.
+\end{corollary}
+
+This concludes the formal specification of the prophecy--response operator. Ethical constraints
+will be integrated in Section~5.

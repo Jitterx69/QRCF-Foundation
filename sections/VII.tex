@@ -1,0 +1,183 @@
+% -------------------------------------------------------
+% SECTION 7: MAIN THEOREM SERIES
+% -------------------------------------------------------
+
+In this section we develop and consolidate the fundamental theoretical results governing the
+quantum prophecy--response operator $\Phi^{\mathcal{Q}}$. These theorems address the existence of
+fixed points, uniqueness under contraction, ethical feasibility conditions, stability boundaries, and
+the limits imposed by computational complexity. Together they form the mathematical backbone
+of quantum reflexive control.
+
+Throughout, $\mathcal{H} = \mathcal{H}_X \otimes \mathcal{H}_V$ denotes a fixed finite-dimensional
+Hilbert space and $\mathcal{D}(\mathcal{H})$ the set of density operators on $\mathcal{H}$.
+
+\subsection{Existence of Prophetic Equilibria}
+
+We begin by establishing fundamental conditions for the existence of a reflexive equilibrium, i.e.,
+a state $\rho^\ast$ satisfying $\Phi^{\mathcal{Q}}(\rho^\ast) = \rho^\ast$.
+
+\begin{theorem}[Existence of Fixed Points]
+\label{thm:existence-fixed-point}
+The operator $\Phi^{\mathcal{Q}} : \mathcal{D}(\mathcal{H}) \to \mathcal{D}(\mathcal{H})$ admits at least
+one fixed point.
+\end{theorem}
+
+\begin{proof}
+The set $\mathcal{D}(\mathcal{H})$ is a compact convex subset of a finite-dimensional vector
+space. The map $\Phi^{\mathcal{Q}}$ is continuous because it is a composition of continuous maps
+($M$, $\rho_{\mathrm{rel}}$, $\pi$, $\mathcal{E}$). By the Brouwer fixed-point theorem, any continuous
+self-map on a compact convex set admits at least one fixed point.
+\end{proof}
+
+This result holds independently of contraction or ethical feasibility constraints.
+
+\subsection{Uniqueness via Contraction}
+
+We strengthen existence to uniqueness when the operator exhibits contractive behavior.
+
+\begin{theorem}[Uniqueness Under Contraction]
+\label{thm:unique-fixed-point}
+Assume there exists $k < 1$ such that
+\[
+    \|\Phi^{\mathcal{Q}}(\rho_1) - \Phi^{\mathcal{Q}}(\rho_2)\|_1
+    \le
+    k \|\rho_1 - \rho_2\|_1
+\]
+for all $\rho_1,\rho_2 \in \mathcal{D}(\mathcal{H})$. Then $\Phi^{\mathcal{Q}}$ has a unique fixed point
+$\rho^\ast$, and for any initial state $\rho_0$,
+\[
+    \lim_{t\to\infty} (\Phi^{\mathcal{Q}})^t(\rho_0) = \rho^\ast.
+\]
+\end{theorem}
+
+\begin{proof}
+This follows directly from the Banach fixed-point theorem. Contractivity ensures that the
+sequence $\rho_{t+1} = \Phi^{\mathcal{Q}}(\rho_t)$ converges to a unique point.
+\end{proof}
+
+\begin{remark}
+The contraction constant $k$ can be tuned through regulator parameters $(\lambda,\alpha)$.
+Noise (increasing $\lambda$) strengthens contraction, while measurement sharpness (increasing
+$\alpha$) weakens it.
+\end{remark}
+
+\subsection{Stability of Prophetic Equilibria}
+
+The stability of equilibria under small perturbations is essential for reliably deploying quantum
+prophetic systems.
+
+\begin{definition}[Stability]
+A fixed point $\rho^\ast$ of $\Phi^{\mathcal{Q}}$ is \emph{stable} if for every $\epsilon > 0$ there exists
+$\delta > 0$ such that
+\[
+    \|\rho - \rho^\ast\|_1 < \delta
+    \quad\Rightarrow\quad
+    \|\Phi^{\mathcal{Q}}(\rho) - \rho^\ast\|_1 < \epsilon.
+\]
+\end{definition}
+
+\begin{theorem}[Stability Under Contraction]
+Any fixed point arising under the contraction conditions of
+Theorem~\ref{thm:unique-fixed-point} is stable.
+\end{theorem}
+
+\begin{proof}
+Immediate from contraction: the operator reduces distances monotonically.
+\end{proof}
+
+\subsection{Ethical Feasibility and Harm Minimization}
+
+We now provide theoretical guarantees for the ethical control framework introduced in
+Section~5.
+
+\begin{theorem}[Feasible Ethical Control]
+\label{thm:ethical-feasibility}
+Let $\epsilon > 0$ be a leakage threshold. Suppose $\mathcal{U}$ contains parameters
+$(\lambda,\alpha)$ such that:
+\begin{itemize}[leftmargin=1cm]
+    \item $L(\rho) \le \epsilon$ for all reachable states $\rho$,
+    \item $\Phi^{\mathcal{Q}}_{\lambda,\alpha}$ is contractive with constant $k < 1$.
+\end{itemize}
+Then there exists an ethically feasible regulator achieving minimal harm.
+\end{theorem}
+
+\begin{proof}[Sketch]
+The leakage constraint restricts the action space. Compactness of the set of feasible
+parameters ensures existence of minimizers. Contraction ensures that all trajectories converge to
+a unique equilibrium, allowing evaluation of the Bellman objective via fixed points.
+\end{proof}
+
+\begin{theorem}[Ethical Fixed Point]
+Under the assumptions of Theorem~\ref{thm:ethical-feasibility}, there exists a unique fixed point
+$\rho^\ast$ satisfying both:
+\[
+    \rho^\ast = \Phi^{\mathcal{Q}}_{\lambda^\ast,\alpha^\ast}(\rho^\ast),
+\qquad
+    L(\rho^\ast) \le \epsilon.
+\]
+\end{theorem}
+
+\begin{proof}
+Existence follows from Brouwer; uniqueness follows from contraction.
+\end{proof}
+
+\subsection{Prophetic Impossibility Under Undecidability}
+
+We now formalize the conditions under which prophecy is impossible due to computational
+constraints.
+
+\begin{theorem}[Undecidability of Crash Prediction]
+Let $\Phi^{\mathcal{Q}}$ encode an arbitrary Turing computation in its latent register. Then there is no
+algorithm that decides whether
+\[
+    P_{\mathrm{crash}}\big((\Phi^{\mathcal{Q}})^t(\rho_0)\big) > \tfrac{1}{2}
+\]
+for some $t \in \mathbb{N}$.
+\end{theorem}
+
+\begin{proof}
+The existence of such an algorithm would solve the Halting Problem by reduction. See
+Section~6 for details.
+\end{proof}
+
+\subsection{Ethical Boundaries from Computability}
+
+Ethical control interacts nontrivially with undecidability.
+
+\begin{definition}[Ethically Impossible Regime]
+A regulatory regime is ethically impossible if minimizing $H(\rho)$ requires distinguishing
+between states encoding halting vs.\ non-halting computations.
+\end{definition}
+
+\begin{theorem}[Ethical Impossibility Theorem]
+If achieving $H(\rho) < H_0$ for some threshold $H_0$ requires resolving crash outcomes encoded
+by non-halting computations, then no regulator can achieve $H(\rho) < H_0$.
+\end{theorem}
+
+\begin{proof}[Sketch]
+If $H(\rho)$ can only be minimized by obtaining prophetic information that distinguishes halting
+from non-halting behavior, then any such regulator must solve the Halting Problem. This is
+impossible.
+\end{proof}
+
+\subsection{Stability Boundaries}
+
+Finally, we examine the interface between computation and dynamical stability.
+
+\begin{theorem}[Stability Frontier]
+If $\Phi^{\mathcal{Q}}$ simulates a universal Turing machine on a subsystem, stability of the fixed
+point cannot be guaranteed in general.
+\end{theorem}
+
+\begin{proof}[Sketch]
+Arbitrarily small changes to initial conditions can cause divergence of computational paths,
+preventing contraction. Thus, the operator cannot be globally stable in trace norm.
+\end{proof}
+
+\begin{corollary}[Decidability and Stability Coincide in Contractive Regimes]
+If $\Phi^{\mathcal{Q}}$ is contractive, then prophecy is decidable (Section~6) and the equilibrium is
+stable (this section).
+\end{corollary}
+
+This completes the theoretical framework for existence, stability, ethical feasibility, and
+computational boundaries of quantum prophecy.

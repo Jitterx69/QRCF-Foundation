@@ -1,0 +1,221 @@
+% -------------------------------------------------------
+% APPENDIX A: EXPANDED PROOFS
+% -------------------------------------------------------
+
+This appendix contains detailed proofs and expansions of the statements presented in the main
+text. All Hilbert spaces are finite-dimensional unless otherwise noted.
+
+% -------------------------------------------------------
+\subsection{Proof that the Measurement Instrument $M$ is CPTP}
+
+Recall that
+\[
+    M(\rho)
+    =
+    \sum_{i=0}^1
+    (\id_X \otimes M_i)\, \rho\, (\id_X \otimes M_i^\dagger),
+\]
+where $M_i = \sqrt{E_i}$ and $E_0 + E_1 = \id_V$.
+
+\begin{proof}
+Since $E_i \succeq 0$, each $M_i$ is well-defined and satisfies $M_i^\dagger M_i = E_i$.
+The map $M(\cdot)$ is of the standard Kraus form
+\[
+    M(\cdot) = \sum_j A_j(\cdot)A_j^\dagger,
+\]
+where $A_i = \id_X \otimes M_i$. Thus $M$ is CP.
+
+Trace preservation follows because
+\[
+\sum_{i=0}^1 A_i^\dagger A_i
+= \sum_{i=0}^1 (\id_X\otimes M_i^\dagger)(\id_X\otimes M_i)
+= \id_X\otimes \sum_{i=0}^1 M_i^\dagger M_i
+= \id_X\otimes \id_V
+= \id.
+\]
+Hence $M$ is CPTP.
+\end{proof}
+
+% -------------------------------------------------------
+\subsection{Proof that the Regulator Channel $\rho_{\mathrm{rel}}$ is CPTP}
+
+The regulator applies the depolarizing channel on $\mathcal{H}_V$:
+\[
+\rho_{\mathrm{rel}}(\sigma)
+= (1-\lambda)\sigma + \lambda \frac{\id_V}{2}\otimes \Tr_V(\sigma).
+\]
+
+\begin{proof}
+Define the CPTP maps
+\[
+\mathcal{D}_0(\sigma) = \sigma,\qquad
+\mathcal{D}_1(\sigma) = \frac{\id_V}{2}\otimes \Tr_V(\sigma).
+\]
+The regulator channel is the convex combination
+\[
+\rho_{\mathrm{rel}} = (1-\lambda)\mathcal{D}_0 + \lambda\mathcal{D}_1.
+\]
+Convex combinations of CPTP maps are CPTP. Therefore $\rho_{\mathrm{rel}}$ is CPTP.
+\end{proof}
+
+% -------------------------------------------------------
+\subsection{Proof that the Agent Response Map $\pi$ is CPTP}
+
+The agent response map is defined by
+\[
+\pi(\rho)
+=
+\sum_{i=0}^1
+(U_i\otimes\id_V)\,
+(\id_X\otimes M_i)\,\rho\,(\id_X\otimes M_i^\dagger)
+\,(U_i^\dagger\otimes\id_V).
+\]
+
+\begin{proof}
+Each term in the sum has the form
+\[
+    \rho \mapsto (U_i\otimes\id_V)
+                 (\id_X\otimes M_i)\,\rho\,
+                 (\id_X\otimes M_i^\dagger)
+                 (U_i^\dagger\otimes\id_V).
+\]
+This is CP because it is a composition of CP maps:
+\begin{itemize}
+    \item Left multiplication by $(\id\otimes M_i)$ is CP;
+    \item Right multiplication by $(\id\otimes M_i^\dagger)$ is CP;
+    \item Conjugation by a unitary $(U_i\otimes\id)$ is CP.
+\end{itemize}
+Trace preservation holds because
+\[
+\sum_{i=0}^1 (U_i\otimes\id)(\id\otimes M_i^\dagger M_i)(U_i^\dagger\otimes\id)
+=
+\sum_{i=0}^1 (\id_X\otimes E_i)
+= \id,
+\]
+as $E_0+E_1=\id_V$.
+\end{proof}
+
+% -------------------------------------------------------
+\subsection{Expanded Proof that $\Phi^{\mathcal{Q}}$ is CPTP}
+
+\[
+    \Phi^{\mathcal{Q}}
+    =
+    \mathcal{E}
+    \circ
+    \pi
+    \circ
+    \rho_{\mathrm{rel}}
+    \circ
+    M.
+\]
+
+\begin{proof}
+From A.1, A.2, and A.3 we know that each map in the composition is CPTP. CPTP maps are closed
+under composition. Therefore $\Phi^{\mathcal{Q}}$ is CPTP.
+\end{proof}
+
+% -------------------------------------------------------
+\subsection{Expanded Proof of Fixed-Point Existence}
+
+\begin{theorem*}[Theorem 1 (Existence of Fixed Points)]
+$\Phi^{\mathcal{Q}}$ admits at least one fixed point in $\mathcal{D}(\mathcal{H})$.
+\end{theorem*}
+
+\begin{proof}
+The space $\mathcal{D}(\mathcal{H})$ is compact and convex in the Euclidean topology. Since
+$\Phi^{\mathcal{Q}}$ is continuous (all matrix operations are continuous), it follows from the Brouwer
+fixed-point theorem that $\Phi^{\mathcal{Q}}$ has at least one fixed point.
+\end{proof}
+
+% -------------------------------------------------------
+\subsection{Expanded Proof of Contraction Uniqueness}
+
+\begin{theorem*}[Theorem 2 (Uniqueness Under Contraction)]
+If
+\[
+\|\Phi^{\mathcal{Q}}(\rho_1)-\Phi^{\mathcal{Q}}(\rho_2)\|_1
+\le k\|\rho_1 - \rho_2\|_1,
+\quad
+k<1,
+\]
+then there exists a unique fixed point $\rho^\ast$, and
+\(
+\displaystyle \lim_{t\to\infty} (\Phi^{\mathcal{Q}})^t(\rho_0)=\rho^\ast.
+\)
+\end{theorem*}
+
+\begin{proof}
+By assumption $\Phi^{\mathcal{Q}}$ is a contraction on the complete metric space
+$(\mathcal{D}(\mathcal{H}),\|\cdot\|_1)$. The Banach fixed-point theorem guarantees existence and
+uniqueness of the fixed point and geometric convergence of iterates toward it.
+\end{proof}
+
+% -------------------------------------------------------
+\subsection{Expanded Proof of Ethical Feasibility Theorems}
+
+\begin{theorem*}[Ethical Feasibility (Theorem 3)]
+If $L(\rho)\le\epsilon$ for all reachable states and $\Phi^{\mathcal{Q}}_{\lambda,\alpha}$ is contractive,
+then an optimal regulator exists.
+\end{theorem*}
+
+\begin{proof}
+Let $\mathcal{U}_\epsilon \subseteq [0,1]^2$ denote the feasible parameter set satisfying the leakage
+constraint. Since $L$ is continuous and $[0,1]^2$ is compact, the feasible set is closed and compact.
+The Bellman objective
+\[
+H(\rho) + \gamma\,V(\Phi^{\mathcal{Q}}_{\lambda,\alpha}(\rho))
+\]
+is continuous in $(\lambda,\alpha)$ and attains a minimum on a compact set. Hence an optimal
+regulator strategy exists.
+\end{proof}
+
+\begin{theorem*}[Ethical Fixed Point (Theorem 4)]
+Under the above assumptions, the system admits a unique fixed point $\rho^\ast$ satisfying
+\[
+    \rho^\ast = \Phi^{\mathcal{Q}}_{\lambda^\ast,\alpha^\ast}(\rho^\ast),\qquad L(\rho^\ast)\le \epsilon.
+\]
+\end{theorem*}
+
+\begin{proof}
+Existence follows from Brouwer because $\Phi^{\mathcal{Q}}_{\lambda^\ast,\alpha^\ast}$ is continuous.
+Uniqueness follows from the contraction assumption.
+\end{proof}
+
+% -------------------------------------------------------
+\subsection{Formalization of the Computability Embedding Lemma}
+
+\begin{lemma*}[Computational Embedding]
+For any classical Turing machine $M$, there exists a CPTP map $\mathcal{E}_M$ such that the
+iteration $\rho_{t+1}=\Phi^{\mathcal{Q}}(\rho_t)$ encodes the computation history of $M$ in a
+tensor-factor subsystem of $\mathcal{H}$.
+\end{lemma*}
+
+\begin{proof}
+Any reversible classical computation can be embedded into a unitary operation $U_M$ on an
+extended Hilbert space. For each computational step, extend $\Phi^{\mathcal{Q}}$ by tensoring with
+ancilla registers encoding tape, head position, and internal states. The composite channel
+\[
+\mathcal{E}_M(\rho) = U_M (\rho\otimes\ket{0}\!\bra{0}) U_M^\dagger
+\]
+is CPTP. Since $\Phi^{\mathcal{Q}}$ is CPTP and extensible, the iteration
+$\rho_{t+1}=\Phi^{\mathcal{Q}}(\rho_t)$ reproduces $M$'s computational trajectory.
+\end{proof}
+
+% -------------------------------------------------------
+\subsection{Expanded Proof of the Prophetic Impossibility Theorem}
+
+\begin{theorem*}[Undecidability of Perfect Prophecy]
+Determining whether $P_{\mathrm{crash}}((\Phi^{\mathcal{Q}})^t(\rho_0))>\tfrac{1}{2}$ for some
+$t\in\mathbb{N}$ is undecidable in general.
+\end{theorem*}
+
+\begin{proof}
+Given any Turing machine $M$, construct $\mathcal{E}_M$ as above so that $M$ halts if and only
+if the latent register enters a designated crash state. Then:
+\[
+M\ \text{halts} \iff 
+\exists t:\ P_{\mathrm{crash}}\big((\Phi^{\mathcal{Q}})^t(\rho_0)\big)>\tfrac{1}{2}.
+\]
+If such crash detection were decidable, the Halting Problem would be decidable. Contradiction.
+\end{proof}

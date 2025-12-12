@@ -1,0 +1,33 @@
+% -------------------------------------------------------
+% File: cptp-structure.tex
+% Diagram: Structure of a CPTP Map (Kraus + Stinespring)
+% -------------------------------------------------------
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=2.2cm,>=stealth,rounded corners]
+
+% Nodes
+\node[draw, thick, minimum width=2.8cm, minimum height=1.2cm]
+    (rho) {$\rho$};
+
+\node[draw, thick, minimum width=3.2cm, minimum height=1.2cm, right=2.5cm of rho]
+    (kraus) {Kraus Ops \\ $\{A_i\}$};
+
+\node[draw, thick, minimum width=3.2cm, minimum height=1.2cm, right=2.5cm of kraus]
+    (sum) {$\displaystyle \sum_i A_i \rho A_i^\dagger$};
+
+\node[draw, thick, minimum width=4cm, minimum height=1.2cm, below=1.8cm of kraus]
+    (stine) {Stinespring Isometry $V$ \\ $\mathcal{E}(\rho)=\Tr_E[V\rho V^\dagger]$};
+
+% Arrows
+\draw[->, thick] (rho) -- (kraus);
+\draw[->, thick] (kraus) -- (sum);
+
+\draw[->, thick] (rho) -- ++(0,-1.2) -| (stine);
+\draw[->, thick] (stine) -- ++(2.8,0) |- (sum);
+
+% Caption
+\end{tikzpicture}
+\caption{Structure of a CPTP map: the Kraus representation and its equivalence with the Stinespring dilation.}
+\end{figure}

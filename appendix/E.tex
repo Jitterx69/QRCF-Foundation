@@ -1,0 +1,262 @@
+
+% -------------------------------------------------------
+% APPENDIX E: NUMERICAL METHODS, ALGORITHMS, AND SAFETY ANALYSIS
+% -------------------------------------------------------
+
+This appendix supplements the theoretical development of $\Phi^{\mathcal{Q}}$ with practical
+simulation methods, numerical heuristics, stability metrics, computational complexity analysis, and
+algorithmic safety detectors. These tools are intended to support reproducibility, experimental
+evaluation, and future engineering work on quantum prophetic systems.
+
+% -------------------------------------------------------
+\subsection{Numerical Fixed-Point Computation Framework}
+
+Let $\Phi = \Phi^{\mathcal{Q}}_{\lambda,\alpha}$ denote the parameterized prophecy--response operator.
+To compute fixed points numerically we implement the iterative scheme
+\[
+\rho_{t+1} = \Phi(\rho_t),
+\]
+with an appropriate stopping criterion.
+
+\begin{definition}[Stopping Criterion]
+Iteration halts at step $t$ if
+\[
+\|\rho_{t} - \rho_{t-1}\|_1 < \varepsilon,
+\]
+for some tolerance $0 < \varepsilon \ll 1$.
+\end{definition}
+
+For simulations in this appendix we take $\varepsilon = 10^{-10}$ unless otherwise stated.
+
+\begin{lemma}[Convergence in Contractive Regimes]
+If $\Phi$ is contractive with constant $k<1$, the above scheme converges in $O(\log \varepsilon / \log k)$ iterations.
+\end{lemma}
+
+\begin{proof}
+For contractive $\Phi$, one has
+\[
+\|\rho_t - \rho^\ast\|_1 \le k^t \|\rho_0 - \rho^\ast\|_1.
+\]
+Solve $k^t \|\rho_0-\rho^\ast\|_1 <\varepsilon$.
+\end{proof}
+
+When $\Phi$ is non-expansive but not strictly contractive, convergence may still occur, but rate guarantees may fail.
+
+% -------------------------------------------------------
+\subsection{Numerical Trace-Distance Stability Metrics}
+
+To evaluate stability numerically we introduce the following diagnostic.
+
+\begin{definition}[Local Trace-Distance Gain]
+For two nearby states $\rho$ and $\rho'$ define
+\[
+G(\rho,\rho') = \frac{\|\Phi(\rho)-\Phi(\rho')\|_1}{\|\rho-\rho'\|_1}.
+\]
+\end{definition}
+
+\begin{itemize}
+\item $G<1$ indicates *local contraction*.
+\item $G=1$ indicates *neutral dynamics*.
+\item $G>1$ indicates *local instability*.
+\end{itemize}
+
+\begin{definition}[Worst-Case Local Gain]
+\[
+G_{\max} = \sup_{\rho,\rho'} G(\rho,\rho').
+\]
+\end{definition}
+
+If $G_{\max} < 1$ then $\Phi$ is contractive globally.
+
+\subsubsection*{Numerical Procedure}
+We evaluate $G(\rho,\rho')$ by perturbing $\rho$ in random directions:
+\[
+\rho' = \rho + \delta H,
+\]
+where $H$ is traceless Hermitian with $\|H\|_1=1$.
+
+A typical simulation uses:
+\begin{align*}
+N_{\text{samples}} &= 500,\\
+\delta &= 10^{-5}.
+\end{align*}
+
+This provides empirical evidence for contraction or instability.
+
+% -------------------------------------------------------
+\subsection{Numerical Tables for Key Quantities}
+
+For the worked example (Section 8), we list the main computed values.
+
+\begin{center}
+\begin{tabular}{c|c}
+\textbf{Quantity} & \textbf{Value} \\
+\hline
+$P_{\mathrm{crash}}(\rho_0)$ & $0.300000$ \\
+$P_{\mathrm{crash}}(\rho^{(1)})$ & $0.160000$ \\
+Leakage $I(X;V_{\mathrm{rel}})$ & $0.590139$ bits \\
+Local gain $G(\rho_0,\rho_0')$ & $\approx 0.6720$ \\
+Fixed-point contraction constant (empirical) & $\approx 0.37$ \\
+Fixed point crash probability $P_{\mathrm{crash}}(\rho^\ast)$ & $0.13333333$ \\
+Disturbance $\|\rho^\ast - M(\rho^\ast)\|_1$ & $0$ (instrument fixed point) \\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Interpretation}
+
+The empirical contraction constant $0.37 < 1$ confirms not only the existence but the *unique*
+attractor nature of $\rho^\ast$. A disturbance of zero indicates that the system settles into a state
+invariant under the measurement instrument used.
+
+% -------------------------------------------------------
+\subsection{Algorithmic Complexity of Evaluating $\Phi^{\mathcal{Q}}$}
+
+Let $d_X = \dim(\mathcal{H}_X)$ and $d_V=\dim(\mathcal{H}_V)$ with total dimension $d=d_X d_V$.
+
+\subsubsection*{Matrix-Operation Complexity}
+\begin{itemize}
+\item Kraus-operator evolution: $O(r d^2)$ for $r$ Kraus operators.
+\item Measurement instrument: $O(m d^2)$ for $m$ POVM outcomes.
+\item Regulator channel: $O(d^2)$ (mixture of two operators).
+\item Agent unitary action: $O(d^2)$.
+\end{itemize}
+
+Thus one application of $\Phi^{\mathcal{Q}}$ costs
+\[
+O((r+m)d^2).
+\]
+
+\subsubsection*{Fixed-Point Iteration Complexity}
+For $T$ iterations,
+\[
+O(T(r+m)d^2).
+\]
+If contractive with constant $k<1$,
+\[
+T = O(\log(\varepsilon^{-1})).
+\]
+
+\begin{remark}
+Thus even high-precision fixed-point computation scales polynomially in $d$ and logarithmically
+in inverse precision.
+\end{remark}
+
+% -------------------------------------------------------
+\subsection{Safety-Region Detection Algorithms}
+
+The undecidability results in Section 6 warn that some parameter regions may encode Turing
+dynamics, making prophecy non-computable. To operationalize this, we define safety tests.
+
+\subsubsection*{1. Contraction Safety Test}
+
+\begin{definition}[Safe Region]
+A parameter pair $(\lambda,\alpha)$ lies in the safe region if the empirical contraction constant
+satisfies
+\[
+k_{\mathrm{emp}}(\lambda,\alpha) < 1.
+\]
+\end{definition}
+
+\begin{algorithm}[H]
+\caption{Empirical Contraction Tester}
+\begin{algorithmic}
+\STATE Input: $(\lambda,\alpha)$
+\STATE Sample random density matrices $\rho_i$
+\STATE Compute perturbations $\rho_i'$
+\STATE Evaluate gains $G(\rho_i,\rho_i')$
+\IF{$\max_i G(\rho_i,\rho_i') < 1$}
+    \RETURN SAFE
+\ELSE
+    \RETURN UNSAFE
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection*{2. Entropy-Growth Safety Test}
+
+Some parameter regimes cause entropy oscillations that indicate reflexive instability.
+
+\begin{definition}[Entropy Oscillation Index]
+\[
+\Delta_t = |S(\rho_{t+1}) - S(\rho_t)|.
+\]
+\end{definition}
+
+If $\Delta_t$ remains bounded by a small tolerance for all $t$ up to a horizon $T$, the regime is
+considered entropy-stable.
+
+\subsubsection*{3. Leakage Explosion Test}
+
+We track leakage under iteration:
+\[
+L_t = I(X;V_{\mathrm{rel}})(\rho_t).
+\]
+
+A regime is flagged unsafe if $L_t$ exhibits superlinear growth:
+\[
+L_{t+1} - L_t > C L_t
+\]
+for constant $C>0$.
+
+This identifies regions approaching informational chaos.
+
+% -------------------------------------------------------
+\subsection{Numerical Pareto Frontiers for Ethical Optimization}
+
+Ethical optimization requires balancing harm and leakage. For each $(\lambda,\alpha)$ we compute:
+\[
+\begin{aligned}
+H(\rho^\ast_{\lambda,\alpha}),\\
+L(\rho^\ast_{\lambda,\alpha}).
+\end{aligned}
+\]
+
+We define the Pareto frontier:
+\[
+\mathcal{P} = \{ (\lambda,\alpha) : \text{no other pair strictly dominates in both } H \text{ and } L \}.
+\]
+
+For the example in Section 8, grid search yields roughly:
+
+\begin{itemize}
+\item Low-disturbance but high-leakage frontier (sharp measurements).
+\item Low-leakage but higher-disturbance frontier (significant depolarization).
+\item Mixed-efficiency frontier (intermediate values).
+\end{itemize}
+
+This frontier provides the regulator with quantifiable trade-offs.
+
+% -------------------------------------------------------
+\subsection{Safety-Aware Fixed-Point Selection}
+
+Given multiple equilibria in non-contractive regimes, the regulator must choose safe equilibria.
+
+\begin{definition}[Safety Feasible Equilibrium]
+A fixed point $\rho^\ast$ is safety-feasible if:
+\[
+\begin{aligned}
+& L(\rho^\ast) \le \epsilon, \\
+& P_{\mathrm{crash}}(\rho^\ast) \le \eta, \\
+& k_{\mathrm{loc}}(\rho^\ast) < 1.
+\end{aligned}
+\]
+\end{definition}
+
+This selects equilibria that are both ethically and dynamically stable.
+
+% -------------------------------------------------------
+\subsection{Summary}
+
+The tools in this appendix provide:
+\begin{enumerate}
+\item practical fixed-point solvers;
+\item numerical tests for contraction and stability;
+\item computational complexity estimates;
+\item algorithms for detecting unsafe (undecidability-prone) regimes;
+\item Pareto-frontier analysis for ethical regulation;
+\item safety-feasible equilibrium selection criteria.
+\end{enumerate}
+
+These methods serve as the quantitative backbone for simulation and engineering work in quantum
+prophetic systems, complementing the theoretical results of the main text.
+

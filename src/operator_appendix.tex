@@ -1,0 +1,298 @@
+% -------------------------------------------------------
+% File: operator_appendix.tex
+% Operator-theoretic expansions for the
+% Quantum–Reflexive Control Framework.
+% -------------------------------------------------------
+
+\section{Additional Operator-Theoretic Expansions}
+
+This appendix develops supplementary operator-theoretic results used throughout the analysis of
+the prophecy--response operator $\Phi^{\mathcal{Q}}$. We provide explicit block-matrix forms,
+composition rules, continuity theorems, dilation constructions, and operator inequalities that were
+not included in the main text.
+
+Throughout, $\mathcal{H}_X$ and $\mathcal{H}_V$ denote the latent and prophecy Hilbert spaces,
+and the full system is $\mathcal{H} = \mathcal{H}_X \otimes \mathcal{H}_V$ with
+$\dim(\mathcal{H}_X)=d_X$ and $\dim(\mathcal{H}_V)=d_V$.
+
+% -------------------------------------------------------
+\subsection{Block-Operator Representation of Measurement Instruments}
+
+Let $\{M_i\}$ denote the Kraus operators for the prophecy measurement acting on $\mathcal{H}_V$.
+Define:
+\[
+\widetilde{M}_i = \id_X \otimes M_i.
+\]
+
+Any operator $\rho \in \mathcal{B}(\mathcal{H})$ can be written in block form:
+\[
+\rho =
+\begin{pmatrix}
+\rho_{00} & \rho_{01} & \cdots \\
+\rho_{10} & \rho_{11} & \cdots \\
+\vdots & \vdots & \ddots
+\end{pmatrix},
+\]
+where each block is a $d_V \times d_V$ matrix.
+
+Then:
+\[
+M(\rho)
+=
+\sum_i \widetilde{M}_i \rho \widetilde{M}_i^\dagger
+=
+\sum_i
+\begin{pmatrix}
+M_i \rho_{00} M_i^\dagger & M_i\rho_{01}M_i^\dagger & \cdots \\
+M_i \rho_{10} M_i^\dagger & M_i\rho_{11}M_i^\dagger & \cdots \\
+\vdots & \vdots & \ddots
+\end{pmatrix}.
+\]
+
+\paragraph{Observation.}
+The measurement channel acts \emph{independently} on each $X$-indexed block.
+
+This structure is crucial for analyzing partial decoherence and leakage control.
+
+% -------------------------------------------------------
+\subsection{Block Form of the Regulator Channel}
+
+The regulator acts only on $V$, so writing $\sigma$ in blocks as above:
+\[
+\rho_{\mathrm{rel}}(\sigma)
+= (1-\lambda)\sigma
+ + \lambda\,(\id_V/ d_V) \otimes \Tr_V(\sigma).
+\]
+
+In block form:
+\[
+\Tr_V(\sigma)
+=
+\begin{pmatrix}
+\Tr(\sigma_{00}) & \Tr(\sigma_{01}) & \cdots \\
+\Tr(\sigma_{10}) & \Tr(\sigma_{11}) & \cdots \\
+\vdots & \vdots & \ddots
+\end{pmatrix},
+\]
+
+and thus:
+\[
+\rho_{\mathrm{rel}}(\sigma)
+=
+(1-\lambda)
+\begin{pmatrix}
+\sigma_{00} & \sigma_{01} & \cdots \\
+\sigma_{10} & \sigma_{11} & \cdots \\
+\vdots & \vdots & \ddots
+\end{pmatrix}
++
+\lambda
+\begin{pmatrix}
+\Tr(\sigma_{00})\frac{\id_V}{d_V} & \Tr(\sigma_{01})\frac{\id_V}{d_V} & \cdots \\
+\Tr(\sigma_{10})\frac{\id_V}{d_V} & \Tr(\sigma_{11})\frac{\id_V}{d_V} & \cdots \\
+\vdots & \vdots & \ddots
+\end{pmatrix}.
+\]
+
+This clarifies how regulator noise influences cross-block coherence.
+
+% -------------------------------------------------------
+\subsection{Block Form of Agent Response}
+
+Let $U_i$ act on $\mathcal{H}_X$ only. Then:
+\[
+\pi(\sigma)
+=
+\sum_i (U_i \otimes \id_V)
+      \, \sigma_i \,
+      (U_i^\dagger \otimes \id_V),
+\]
+where $\sigma_i = (\id_X \otimes M_i)\sigma(\id_X \otimes M_i^\dagger)$.
+
+Blockwise:
+\[
+\sigma_i =
+\begin{pmatrix}
+M_i\sigma_{00}M_i^\dagger & M_i\sigma_{01}M_i^\dagger & \cdots \\
+M_i\sigma_{10}M_i^\dagger & M_i\sigma_{11}M_i^\dagger & \cdots \\
+\vdots & \vdots & \ddots
+\end{pmatrix}.
+\]
+
+Applying $U_i$ conjugation permutes or rotates blocks depending on how $U_i$ acts on $X$.
+
+This formalism extends all agent-response policies, including deterministic, stochastic, and mixed-unitary responses.
+
+% -------------------------------------------------------
+\subsection{Composition Structure of the Full Operator}
+
+The prophecy–response operator is:
+
+\[
+\Phi^{\mathcal{Q}}
+= \mathcal{E} \circ \pi \circ \rho_{\mathrm{rel}} \circ M.
+\]
+
+In block form:
+
+\[
+\Phi^{\mathcal{Q}}(\rho)
+=
+\sum_{i,j,k} (K_j \otimes \id_V)
+             (U_i \otimes \id_V)
+             \widetilde{M}_k
+             \rho
+             \widetilde{M}_k^\dagger
+             (U_i^\dagger \otimes \id_V)
+             (K_j^\dagger \otimes \id_V).
+\]
+
+Thus $\Phi^{\mathcal{Q}}$ always admits Kraus operators:
+\[
+A_{ijk} = (K_j U_i) \otimes M_k.
+\]
+
+\begin{proposition}[Explicit Kraus Form of $\Phi^{\mathcal{Q}}$]
+\[
+\Phi^{\mathcal{Q}}(\rho)
+= \sum_{ijk} A_{ijk}\rho A_{ijk}^\dagger.
+\]
+\end{proposition}
+
+\begin{proof}
+Direct expansion of the composed CPTP maps.
+\end{proof}
+
+This is the most explicit possible representation and is used for spectral and contraction analysis.
+
+% -------------------------------------------------------
+\subsection{Continuity of $\Phi^{\mathcal{Q}}$}
+
+\begin{theorem}[Lipschitz Continuity]
+There exists constant $L \le 1$ such that
+\[
+\|\Phi^{\mathcal{Q}}(\rho) - \Phi^{\mathcal{Q}}(\sigma)\|_1
+\le L \|\rho - \sigma\|_1.
+\]
+\end{theorem}
+
+\begin{proof}
+Each component map is either non-expansive or strictly contractive.  
+Specifically:
+\[
+\|M(\rho)-M(\sigma)\|_1 \le \|\rho-\sigma\|_1,
+\]
+\[
+\|\rho_{\mathrm{rel}}(A)-\rho_{\mathrm{rel}}(B)\|_1 \le (1-\lambda)\|A-B\|_1,
+\]
+\[
+\|\pi(A)-\pi(B)\|_1 \le \|A-B\|_1,
+\]
+\[
+\|\mathcal{E}(A)-\mathcal{E}(B)\|_1 \le \|A-B\|_1.
+\]
+Multiply bounds.
+\end{proof}
+
+% -------------------------------------------------------
+\subsection{Differentiability and Fréchet Derivatives}
+
+We define the Fréchet derivative of $\Phi^{\mathcal{Q}}$ at $\rho$ in direction $H$:
+
+\[
+D\Phi^{\mathcal{Q}}(\rho)[H]
+=
+\sum_{ijk}
+A_{ijk} H A_{ijk}^\dagger.
+\]
+
+\begin{proposition}
+$D\Phi^{\mathcal{Q}}(\rho)$ is a completely positive linear map.
+\end{proposition}
+
+\begin{proof}
+Follows from Kraus form above.
+\end{proof}
+
+\begin{corollary}
+\[
+\|D\Phi^{\mathcal{Q}}(\rho)\|_{1 \to 1} \le L \le 1.
+\]
+\end{corollary}
+
+Hence $\Phi^{\mathcal{Q}}$ is globally Lipschitz differentiable.
+
+% -------------------------------------------------------
+\subsection{Spectral Properties}
+
+\begin{theorem}[Spectrum Inside the Unit Disk]
+All eigenvalues of $\Phi^{\mathcal{Q}}$ satisfy $|\lambda| \le 1$.
+\end{theorem}
+
+\begin{proof}
+As a trace-non-increasing CP map on a finite-dimensional space, its operator norm satisfies
+$\|\Phi^{\mathcal{Q}}\|_{1\to1} \le 1$, hence its spectral radius is $\le 1$.
+\end{proof}
+
+\begin{corollary}
+If $\lambda>0$ (depolarization), then the spectral radius is $<1$, guaranteeing contraction.
+\end{corollary}
+
+% -------------------------------------------------------
+\subsection{Characterization of Fixed Points}
+
+\begin{theorem}[Fixed-Point Condition]
+$\rho^\ast$ is a fixed point of $\Phi^{\mathcal{Q}}$ iff
+\[
+\rho^\ast = \sum_{ijk} A_{ijk} \rho^\ast A_{ijk}^\dagger.
+\]
+\end{theorem}
+
+\begin{proposition}[Fixed-Point Subspace]
+The set of fixed points is a convex linear subspace of $\mathcal{B}(\mathcal{H})$.
+\end{proposition}
+
+\begin{proof}
+Follows from linearity and positivity of $\Phi^{\mathcal{Q}}$.
+\end{proof}
+
+In contractive regimes, the fixed-point subspace collapses to a unique point.
+
+% -------------------------------------------------------
+\subsection{Additional Notes on Operator Ordering and Composition}
+
+\paragraph{Important identity.}
+If
+\[
+\Phi = \sum_i A_i (\cdot) A_i^\dagger,\qquad
+\Psi = \sum_j B_j (\cdot) B_j^\dagger,
+\]
+then their composition satisfies:
+\[
+\Psi\circ\Phi = \sum_{i,j} (B_j A_i) (\cdot) (A_i^\dagger B_j^\dagger).
+\]
+
+This gives the exact structure of iteration:
+\[
+\Phi^{t}(\rho) = \sum_{i_1,\ldots,i_t}
+A_{i_t}\cdots A_{i_1}\,\rho\,A_{i_1}^\dagger \cdots A_{i_t}^\dagger.
+\]
+
+\paragraph{Implication.}
+Iterating the prophecy–response operator builds a “path-sum” over all possible measurement and
+response histories.
+
+% -------------------------------------------------------
+\subsection{Summary}
+
+This appendix provides:
+
+\begin{itemize}
+    \item block matrix forms of measurement, regulation, and agent maps,
+    \item explicit Kraus form for the full operator $\Phi^{\mathcal{Q}}$,
+    \item continuity, differentiability, and Lipschitz bounds,
+    \item spectral characterizations,
+    \item structural results for fixed points.
+\end{itemize}
+
+These tools support deeper mathematical analysis and facilitate efficient numerical implementation.

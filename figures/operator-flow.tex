@@ -1,0 +1,40 @@
+% -------------------------------------------------------
+% File: operator-flow.tex
+% Diagram: Detailed Operator Flow of the Prophecy–Response Operator
+% -------------------------------------------------------
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=2.4cm,>=stealth,rounded corners]
+
+% Nodes
+\node[draw, thick, minimum width=2.5cm, minimum height=1.2cm]
+    (rho) {$\rho$};
+
+\node[draw, thick, minimum width=3.2cm, minimum height=1.3cm, right=2.3cm of rho]
+    (M) {Measurement \\ $M(\rho)=\sum_i M_i \rho M_i^\dagger$};
+
+\node[draw, thick, minimum width=3.4cm, minimum height=1.3cm, right=2.3cm of M]
+    (rel) {Regulator \\ $\rho_{\mathrm{rel}}$};
+
+\node[draw, thick, minimum width=3.2cm, minimum height=1.3cm, right=2.3cm of rel]
+    (pi) {Agent Response \\ $\pi(\cdot)$};
+
+\node[draw, thick, minimum width=3.2cm, minimum height=1.3cm, right=2.3cm of pi]
+    (E) {CPTP Evolution \\ $\mathcal{E}$};
+
+\node[right=2.4cm of E] (end) {};
+
+% Arrows
+\draw[->, thick] (rho) -- (M);
+\draw[->, thick] (M) -- (rel);
+\draw[->, thick] (rel) -- (pi);
+\draw[->, thick] (pi) -- (E);
+\draw[->, thick] (E) -- (end) node[right] {$\Phi^{\mathcal{Q}}(\rho)$};
+
+% Optional feedback
+\draw[->, thick, dashed] (E) .. controls +(0,2.8) and +(0,2.8) .. (rho)
+    node[midway, above] {$\rho_{t+1}=\Phi(\rho_t)$};
+
+\caption{Detailed operator-level flow: composition of measurement, regulation, response, and CPTP evolution yielding $\Phi^{\mathcal{Q}}$.}
+\end{figure}

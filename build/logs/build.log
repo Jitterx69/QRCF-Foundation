@@ -1,0 +1,60 @@
+Latexmk: This is Latexmk, version 4.80.
+------------ BUILD STARTED ------------
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex': File changes, etc:
+   Changed files, or newly in use since previous run(s):
+      'main.tex'
+      'sections/I&II.tex'
+      'sections/III&IV.tex'
+      'sections/V&VI.tex'
+      'sections/VII.tex'
+      'sections/VIII.tex'
+      'sections/IX.tex'
+      'appendix/A.tex'
+      'appendix/B.tex'
+      'appendix/C.tex'
+      'appendix/D.tex'
+      'appendix/E.tex'
+      'references.bib'
+
+------------ RUNNING PDFLATEX ------------
+(pdflatex) This is pdfTeX, Version 3.141592653 (TeX Live)
+(pdflatex) entering extended mode
+
+(./main.tex
+LaTeX2e <2023-11-01>
+(/usr/local/texlive/texmf-dist/tex/latex/base/article.cls)
+(/usr/local/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty)
+(/usr/local/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty)
+(/usr/local/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty)
+
+--- Inputting sections ---
+(./sections/I&II.tex)
+(./sections/III&IV.tex)
+(./sections/V&VI.tex)
+(./sections/VII.tex)
+(./sections/VIII.tex)
+(./sections/IX.tex)
+
+--- Inputting appendices ---
+(./appendix/A.tex)
+(./appendix/B.tex)
+(./appendix/C.tex)
+(./appendix/D.tex)
+(./appendix/E.tex)
+
+--- Inputting TikZ diagrams ---
+(./figures/cptp-structure.tex)
+(./figures/diagram1.tex)
+(./figures/operator-flow.tex)
+
+--- Bibliography ---
+(./references.bib)
+BibTeX: no errors. Database OK.
+
+--- Writing output ---
+Output written on build/main.pdf (87 pages, 550324 bytes).
+
+------------ RUN COMPLETE ------------
+Latexmk: All targets (build/main.pdf) are up-to-date.
+------------ BUILD SUCCESSFUL ------------
